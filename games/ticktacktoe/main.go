@@ -15,7 +15,6 @@ import (
 	tc "remapit.visualstudio.com/cubedbits/cubedbitsengine/games/ticktacktoe/components"
 	ts "remapit.visualstudio.com/cubedbits/cubedbitsengine/games/ticktacktoe/states"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/loader"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/math"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/resources"
 	st "remapit.visualstudio.com/cubedbits/cubedbitsengine/states"
 )
@@ -70,14 +69,15 @@ func main() {
 	ecs.AddResource(w, &r)
 
 	spriteSheets := loader.LoadSpriteSheets("../../assets/metadata/spritesheets/spritesheets.toml")
-	slog.Info(fmt.Sprintf("%d", spriteSheets["background"].Sprites[0].Width))
-	slog.Info(fmt.Sprintf("%d", len(spriteSheets)))
+	slog.Info(fmt.Sprintf("%d", spriteSheets.SpriteSheets["background"].Sprites[0].Width))
+	slog.Info(fmt.Sprintf("%d", len(spriteSheets.SpriteSheets)))
+
 	ecs.AddResource(w, &spriteSheets)
 
-	spriteSheet := spriteSheets["game"]
+	spriteSheet := spriteSheets.SpriteSheets["game"]
 
 	mapper := ecs.NewMap1[gc.SpriteRender](w)
-	mapper2 := ecs.NewMap2[gc.SpriteRender, gc.Transform](w)
+
 	mapper3 := ecs.NewMap1[tc.Tile](w)
 
 	for range 30 {
@@ -90,16 +90,6 @@ func main() {
 			},
 		)
 	}
-
-	mapper2.NewEntity(
-
-		&gc.SpriteRender{
-			SpriteSheet:  &spriteSheet,
-			SpriteNumber: 2,
-			Options:      ebiten.DrawImageOptions{},
-		},
-		&gc.Transform{Translation: math.Vector2{X: 133, Y: 220}},
-	)
 
 	mapper3.NewEntity(
 		&tc.Tile{X: 33, Y: 22, State: 123},

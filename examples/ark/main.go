@@ -69,7 +69,7 @@ func main() {
 
 	world = ecs.NewWorld()
 
-	mapper := ecs.NewMap1[Sprite ](world)
+	mapper := ecs.NewMap1[Sprite](world)
 
 	for range 30 {
 		_ = mapper.NewEntity(

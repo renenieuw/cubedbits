@@ -7,13 +7,13 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-type spriteSheetMetadata struct {
+type SpriteSheetMetadata struct {
 	SpriteSheets map[string]c.SpriteSheet `toml:"sprite_sheet"`
 }
 
 // LoadSpriteSheets loads sprite sheets from a TOML file
-func LoadSpriteSheets(spriteSheetMetadataPath string) map[string]c.SpriteSheet {
-	var spriteSheetMetadata spriteSheetMetadata
+func LoadSpriteSheets(spriteSheetMetadataPath string) SpriteSheetMetadata {
+	var spriteSheetMetadata SpriteSheetMetadata
 	utils.Try(toml.DecodeFile(spriteSheetMetadataPath, &spriteSheetMetadata))
-	return spriteSheetMetadata.SpriteSheets
+	return spriteSheetMetadata
 }
