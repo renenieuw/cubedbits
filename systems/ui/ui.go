@@ -1,11 +1,11 @@
 package uisystem
 
 import (
-	w "remapit.visualstudio.com/cubedbits/cubedbitsengine/world"
+	ecs "github.com/mlange-42/ark/ecs"
 )
 
 // UISystem sets mouse reactive components
-func UISystem(world w.World) {
+func UISystem(world *ecs.World) {
 	// world.Manager.Join(world.Components.Engine.SpriteRender, world.Components.Engine.Transform, world.Components.Engine.MouseReactive).Visit(ecs.Visit(func(entity ecs.Entity) {
 	// 	sprite := world.Components.Engine.SpriteRender.Get(entity).(*c.SpriteRender)
 	// 	transform := world.Components.Engine.Transform.Get(entity).(*c.Transform)

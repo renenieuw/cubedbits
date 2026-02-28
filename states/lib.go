@@ -8,6 +8,7 @@ import (
 	"github.com/labstack/gommon/log"
 	w "github.com/mlange-42/ark/ecs"
 	s "remapit.visualstudio.com/cubedbits/cubedbitsengine/systems/sprite"
+	u "remapit.visualstudio.com/cubedbits/cubedbitsengine/systems/ui"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/utils"
 )
 
@@ -84,7 +85,7 @@ func (sm *StateMachine) Update(world *w.World) {
 
 	// Run pre-game systems
 	//	i.InputSystem(world)
-	//u.UISystem(world)
+	u.UISystem(world)
 
 	// Run state update function with game systems
 	sm.lastTransition = sm.states[len(sm.states)-1].Update(world)
@@ -100,7 +101,7 @@ func (sm *StateMachine) Update(world *w.World) {
 func (sm *StateMachine) Draw(world *w.World, screen *ebiten.Image) {
 	// Run drawing systems
 	s.RenderSpriteSystem(world, screen)
-	//u.RenderUISystem(world, screen)
+	u.RenderUISystem(world, screen)
 
 }
 

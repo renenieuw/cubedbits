@@ -1,9 +1,13 @@
 package loader
 
 import (
+	"image/color"
+
+	"github.com/golang/freetype/truetype"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/mlange-42/ark/ecs"
 	w "github.com/mlange-42/ark/ecs"
+	"golang.org/x/image/font"
 	c "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/utils"
 
@@ -156,5 +160,73 @@ func processSpriteRenderData(world *w.World, spriteRenderData *spriteRenderData)
 			Sprites: []c.Sprite{{X: 0, Y: 0, Width: spriteRenderData.Fill.Width, Height: spriteRenderData.Fill.Height}},
 		},
 		SpriteNumber: 0,
+	}
+}
+
+//
+// Text
+//
+
+type FontFaceOptions struct {
+	Size              float64
+	DPI               float64
+	Hinting           string
+	GlyphCacheEntries int `toml:"glyph_cache_entries"`
+	SubPixelsX        int `toml:"sub_pixels_x"`
+	SubPixelsY        int `toml:"sub_pixels_y"`
+}
+
+var hintingMap = map[string]font.Hinting{
+	"":         font.HintingFull,
+	"None":     font.HintingNone,
+	"Vertical": font.HintingVertical,
+	"Full":     font.HintingFull,
+}
+
+type FontFaceData struct {
+	Font    string
+	Options FontFaceOptions
+}
+
+type TextData struct {
+	ID       string
+	Text     string
+	FontFace FontFaceData `toml:"font_face"`
+	Color    [4]uint8
+}
+
+func ProcessTextData(world *w.World, textData *TextData) *c.Text {
+	if textData == nil {
+		return nil
+	}
+
+	fonts := ecs.GetResource[FontMetadata](world)
+
+	// Search font from its name
+	textFont, ok := fonts.Fonts[textData.FontFace.Font]
+	if !ok {
+		utils.LogFatalf("unable to find font with name '%s'", textData.FontFace.Font)
+	}
+
+	// Check hinting
+	hinting, ok := hintingMap[textData.FontFace.Options.Hinting]
+	if !ok {
+		utils.LogFatalf("unknown hinting option: '%s'", textData.FontFace.Options.Hinting)
+	}
+
+	options := &truetype.Options{
+		Size:              textData.FontFace.Options.Size,
+		DPI:               textData.FontFace.Options.DPI,
+		Hinting:           hinting,
+		GlyphCacheEntries: textData.FontFace.Options.GlyphCacheEntries,
+		SubPixelsX:        textData.FontFace.Options.SubPixelsX,
+		SubPixelsY:        textData.FontFace.Options.SubPixelsY,
+	}
+
+	return &c.Text{
+		ID:       textData.ID,
+		Text:     textData.Text,
+		FontFace: truetype.NewFace(textFont.Font, options),
+		Color:    color.RGBA{R: textData.Color[0], G: textData.Color[1], B: textData.Color[2], A: textData.Color[3]},
 	}
 }
