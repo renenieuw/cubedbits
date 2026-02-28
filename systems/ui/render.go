@@ -9,11 +9,11 @@ import (
 
 // RenderUISystem draws text entities
 func RenderUISystem(world *ecs.World, screen *ebiten.Image) {
-	filter := ecs.NewFilter1[c.Text](world)
+	filter := ecs.NewFilter2[c.Text, c.UITransform](world)
 	query := filter.Query()
 	for query.Next() {
-		sr := query.Get()
-		text.Draw(screen, sr.Text, sr.FontFace, 222, 222, sr.Color)
+		sr, tr := query.Get()
+		text.Draw(screen, sr.Text, sr.FontFace, tr.Translation.X, tr.Translation.Y, sr.Color)
 
 	}
 	// col := color.RGBA{0x80, 0x80, 0x80, 0xff}

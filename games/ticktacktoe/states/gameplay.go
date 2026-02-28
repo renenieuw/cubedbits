@@ -37,7 +37,7 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 	mapper2.NewEntity(
 		&gc.SpriteRender{
 			SpriteSheet:  &spriteSheet,
-			SpriteNumber: 4,
+			SpriteNumber: 3,
 			Options:      ebiten.DrawImageOptions{},
 		},
 		&gc.Transform{Translation: math.Vector2{X: 133, Y: 220}},
@@ -74,8 +74,12 @@ func (st *GameplayState) Update(world *ecs.World) states.Transition {
 		return states.Transition{Type: states.TransQuit}
 	}
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyA) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyM) {
 		return states.Transition{Type: states.TransSwitch, NewStates: []states.State{&MenuState{}}}
+	}
+
+	if inpututil.IsKeyJustPressed(ebiten.KeyQ) {
+		return states.Transition{Type: states.TransSwitch, NewStates: []states.State{&GameOverMenuState{}}}
 	}
 
 	return states.Transition{}

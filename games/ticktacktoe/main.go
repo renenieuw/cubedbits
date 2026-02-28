@@ -78,21 +78,19 @@ func main() {
 	fonts := loader.LoadFonts("../../assets/metadata/fonts/fonts.toml")
 	ecs.AddResource(w, &fonts)
 
-	//	font := fonts.Fonts["game"]
+	// td := loader.TextData{
+	// 	ID:       "life",
+	// 	Text:     "LIVES: 5",
+	// 	FontFace: loader.FontFaceData{Font: "joystix", Options: loader.FontFaceOptions{Size: 25.0}},
+	// 	Color:    [4]uint8{255, 0, 0, 255},
+	// }
 
-	td := loader.TextData{
-		ID:       "life",
-		Text:     "LIVES: 5",
-		FontFace: loader.FontFaceData{Font: "joystix", Options: loader.FontFaceOptions{Size: 25.0}},
-		Color:    [4]uint8{255, 0, 0, 255},
-	}
-
-	tt := loader.ProcessTextData(w, &td)
+	// tt := loader.ProcessTextData(w, &td)
 
 	spriteSheet := spriteSheets.SpriteSheets["game"]
 
 	mapper := ecs.NewMap1[gc.SpriteRender](w)
-	mapperText := ecs.NewMap1[gc.Text](w)
+	// mapperText := ecs.NewMap1[gc.Text](w)
 
 	mapper3 := ecs.NewMap1[tc.Tile](w)
 
@@ -107,9 +105,9 @@ func main() {
 		)
 	}
 
-	mapperText.NewEntity(
-		tt,
-	)
+	// mapperText.NewEntity(
+	// 	tt,
+	// )
 
 	mapper3.NewEntity(
 		&tc.Tile{X: 33, Y: 22, State: 123},
@@ -117,7 +115,7 @@ func main() {
 
 	ebiten.SetWindowSize(640, 480)
 	ebiten.SetWindowTitle("Starss")
-	if err := ebiten.RunGame(&Game{w, st.Init(&ts.GameplayState{}, w)}); err != nil {
+	if err := ebiten.RunGame(&Game{w, st.Init(&ts.MenuState{}, w)}); err != nil {
 		log.Fatal(err)
 	}
 }

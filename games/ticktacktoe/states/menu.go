@@ -5,6 +5,9 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/labstack/gommon/log"
 	"github.com/mlange-42/ark/ecs"
+	gc "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
+	"remapit.visualstudio.com/cubedbits/cubedbitsengine/loader"
+	"remapit.visualstudio.com/cubedbits/cubedbitsengine/math"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/states"
 )
 
@@ -26,6 +29,35 @@ func (st *MenuState) OnResume(world *ecs.World) {
 // OnStart method
 func (st *MenuState) OnStart(world *ecs.World) {
 	log.Info("Menu.Start")
+
+	spriteSheets := ecs.GetResource[loader.SpriteSheetMetadata](world)
+	spriteSheet := spriteSheets.SpriteSheets["game"]
+
+	mapper2 := ecs.NewMap2[gc.SpriteRender, gc.Transform](world)
+
+	mapper2.NewEntity(
+		&gc.SpriteRender{
+			SpriteSheet:  &spriteSheet,
+			SpriteNumber: 2,
+			Options:      ebiten.DrawImageOptions{},
+		},
+		&gc.Transform{Translation: math.Vector2{X: 133, Y: 220}},
+	)
+
+	td := loader.TextData{
+		ID:       "menu",
+		Text:     "Menu",
+		FontFace: loader.FontFaceData{Font: "joystix", Options: loader.FontFaceOptions{Size: 25.0}},
+		Color:    [4]uint8{255, 0, 0, 255},
+	}
+	tt := loader.ProcessTextData(world, &td)
+	mapperText := ecs.NewMap2[gc.Text, gc.UITransform](world)
+
+	mapperText.NewEntity(
+		tt,
+		&gc.UITransform{Translation: math.VectorInt2{X: 22, Y: 22}},
+	)
+
 	// // Init rand seed
 	// rand.Seed(time.Now().UnixNano())
 
@@ -39,9 +71,6 @@ func (st *MenuState) OnStart(world *ecs.World) {
 // OnStop method
 func (st *MenuState) OnStop(world *ecs.World) {
 	log.Info("Menu.Stop")
-
-	// world.Resources.Game = nil
-	// world.Manager.DeleteAllEntities()
 }
 
 // Update method
@@ -52,8 +81,12 @@ func (st *MenuState) Update(world *ecs.World) states.Transition {
 		return states.Transition{Type: states.TransQuit}
 	}
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyB) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyG) {
 		return states.Transition{Type: states.TransSwitch, NewStates: []states.State{&GameplayState{}}}
+	}
+
+	if inpututil.IsKeyJustPressed(ebiten.KeyQ) {
+		return states.Transition{Type: states.TransSwitch, NewStates: []states.State{&GameOverMenuState{}}}
 	}
 
 	return states.Transition{}
