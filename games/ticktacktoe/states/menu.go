@@ -70,6 +70,16 @@ func (st *MenuState) OnStart(world *ecs.World) {
 
 // OnStop method
 func (st *MenuState) OnStop(world *ecs.World) {
+	filter := ecs.NewFilter1[gc.SpriteRender](world)
+	world.RemoveEntities(filter.Batch(), func(entity ecs.Entity) {
+		log.Info("Removing", entity)
+	})
+
+	filter2 := ecs.NewFilter1[gc.Text](world)
+	world.RemoveEntities(filter2.Batch(), func(entity ecs.Entity) {
+		log.Info("Removing", entity)
+	})
+
 	log.Info("Menu.Stop")
 }
 

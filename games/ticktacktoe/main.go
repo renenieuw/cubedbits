@@ -11,8 +11,6 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/mlange-42/ark/ecs"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/assets"
-	gc "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
-	tc "remapit.visualstudio.com/cubedbits/cubedbitsengine/games/ticktacktoe/components"
 	ts "remapit.visualstudio.com/cubedbits/cubedbitsengine/games/ticktacktoe/states"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/loader"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/resources"
@@ -62,7 +60,6 @@ func main() {
 
 	gopherImage = ebiten.NewImageFromImage(img)
 
-	col = color.RGBA{0x80, 0x80, 0x80, 0xff}
 	r := resources.ScreenDimensions{Width: 640, Height: 480, Title: "TickTackToe"}
 
 	w := ecs.NewWorld()
@@ -77,41 +74,6 @@ func main() {
 	// Load fonts
 	fonts := loader.LoadFonts("../../assets/metadata/fonts/fonts.toml")
 	ecs.AddResource(w, &fonts)
-
-	// td := loader.TextData{
-	// 	ID:       "life",
-	// 	Text:     "LIVES: 5",
-	// 	FontFace: loader.FontFaceData{Font: "joystix", Options: loader.FontFaceOptions{Size: 25.0}},
-	// 	Color:    [4]uint8{255, 0, 0, 255},
-	// }
-
-	// tt := loader.ProcessTextData(w, &td)
-
-	spriteSheet := spriteSheets.SpriteSheets["game"]
-
-	mapper := ecs.NewMap1[gc.SpriteRender](w)
-	// mapperText := ecs.NewMap1[gc.Text](w)
-
-	mapper3 := ecs.NewMap1[tc.Tile](w)
-
-	for range 30 {
-		_ = mapper.NewEntity(
-
-			&gc.SpriteRender{
-				SpriteSheet:  &spriteSheet,
-				SpriteNumber: 3,
-				Options:      ebiten.DrawImageOptions{},
-			},
-		)
-	}
-
-	// mapperText.NewEntity(
-	// 	tt,
-	// )
-
-	mapper3.NewEntity(
-		&tc.Tile{X: 33, Y: 22, State: 123},
-	)
 
 	ebiten.SetWindowSize(640, 480)
 	ebiten.SetWindowTitle("Starss")

@@ -5,6 +5,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/labstack/gommon/log"
 	"github.com/mlange-42/ark/ecs"
+	gc "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/states"
 )
 
@@ -38,6 +39,15 @@ func (st *GameOverMenuState) OnStart(world *ecs.World) {
 
 // OnStop method
 func (st *GameOverMenuState) OnStop(world *ecs.World) {
+	filter := ecs.NewFilter1[gc.SpriteRender](world)
+	world.RemoveEntities(filter.Batch(), func(entity ecs.Entity) {
+		log.Info("Removing", entity)
+	})
+
+	filter2 := ecs.NewFilter1[gc.Text](world)
+	world.RemoveEntities(filter2.Batch(), func(entity ecs.Entity) {
+		log.Info("Removing", entity)
+	})
 	log.Info("Menu.Stop")
 }
 

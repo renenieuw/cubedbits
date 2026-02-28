@@ -42,14 +42,36 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 		},
 		&gc.Transform{Translation: math.Vector2{X: 133, Y: 220}},
 	)
-	// // Init rand seed
-	// rand.Seed(time.Now().UnixNano())
 
-	// // Load game and text entities
-	// LoadEntities("metadata/start.toml", world)
-	// LoadEntities("metadata/text.toml", world)
+	td := loader.TextData{
+		ID:       "gameplay",
+		Text:     "gameplay",
+		FontFace: loader.FontFaceData{Font: "joystix", Options: loader.FontFaceOptions{Size: 25.0}},
+		Color:    [4]uint8{255, 0, 0, 255},
+	}
+	tt := loader.ProcessTextData(world, &td)
 
-	// world.Resources.Game = NewGame()
+	mapperText := ecs.NewMap2[gc.Text, gc.UITransform](world)
+
+	mapperText.NewEntity(
+		tt,
+		&gc.UITransform{Translation: math.VectorInt2{X: 220, Y: 220}},
+	)
+
+	mapper := ecs.NewMap1[gc.SpriteRender](world)
+	// mapperText := ecs.NewMap1[gc.Text](w)
+
+	for range 30 {
+		_ = mapper.NewEntity(
+
+			&gc.SpriteRender{
+				SpriteSheet:  &spriteSheet,
+				SpriteNumber: 3,
+				Options:      ebiten.DrawImageOptions{},
+			},
+		)
+	}
+
 }
 
 // OnStop method
@@ -57,6 +79,11 @@ func (st *GameplayState) OnStop(world *ecs.World) {
 
 	filter := ecs.NewFilter1[gc.SpriteRender](world)
 	world.RemoveEntities(filter.Batch(), func(entity ecs.Entity) {
+		log.Info("Removing", entity)
+	})
+
+	filter2 := ecs.NewFilter1[gc.Text](world)
+	world.RemoveEntities(filter2.Batch(), func(entity ecs.Entity) {
 		log.Info("Removing", entity)
 	})
 
