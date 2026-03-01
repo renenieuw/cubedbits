@@ -89,7 +89,7 @@ func (st *MenuState) Update(world *ecs.World) states.Transition {
 	}
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyQ) {
-		return states.Transition{Type: states.TransSwitch, NewStates: []states.State{&GameOverMenuState{}}}
+		return states.Transition{Type: states.TransQuit}
 	}
 
 	return states.Transition{}
