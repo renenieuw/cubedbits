@@ -1,8 +1,6 @@
 package states
 
 import (
-	"fmt"
-
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/labstack/gommon/log"
@@ -10,7 +8,6 @@ import (
 	gc "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/loader"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/math"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/resources"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/states"
 )
 
@@ -31,29 +28,7 @@ func (st *MenuState) OnResume(world *ecs.World) {
 
 // OnStart method
 func (st *MenuState) OnStart(world *ecs.World) {
-	log.Info("Menu.Start")
-	log.Info("Menu.Start")
-
-	resources := ecs.GetResource[resources.Resources](world)
-	spriteSheets := resources.SpriteSheets
-	spriteSheet, ok := (*spriteSheets)["game"]
-	if !ok {
-		log.Error("SpriteSheet 'game' not found")
-		return
-	}
-
-	log.Info(fmt.Sprintf("%d", len(spriteSheet.Sprites)))
-
-	mapper2 := ecs.NewMap2[gc.SpriteRender, gc.Transform](world)
-
-	mapper2.NewEntity(
-		&gc.SpriteRender{
-			SpriteSheet:  &spriteSheet,
-			SpriteNumber: 2,
-			Options:      ebiten.DrawImageOptions{},
-		},
-		&gc.Transform{Translation: math.Vector2{X: 133, Y: 220}},
-	)
+	mapperText := ecs.NewMap2[gc.Text, gc.UITransform](world)
 
 	td := loader.TextData{
 		ID:       "menu",
@@ -62,21 +37,28 @@ func (st *MenuState) OnStart(world *ecs.World) {
 		Color:    [4]uint8{255, 0, 0, 255},
 	}
 	tt := loader.ProcessTextData(world, &td)
-	mapperText := ecs.NewMap2[gc.Text, gc.UITransform](world)
 
 	mapperText.NewEntity(
 		tt,
 		&gc.UITransform{Translation: math.VectorInt2{X: 22, Y: 22}},
 	)
 
-	// // Init rand seed
-	// rand.Seed(time.Now().UnixNano())
+	td.Text = "S to start game"
+	tt = loader.ProcessTextData(world, &td)
 
-	// // Load game and text entities
-	// LoadEntities("metadata/start.toml", world)
-	// LoadEntities("metadata/text.toml", world)
+	mapperText.NewEntity(
+		tt,
+		&gc.UITransform{Translation: math.VectorInt2{X: 22, Y: 52}},
+	)
 
-	// world.Resources.Game = NewGame()
+	td.Text = "Q to quit game"
+	tt = loader.ProcessTextData(world, &td)
+
+	mapperText.NewEntity(
+		tt,
+		&gc.UITransform{Translation: math.VectorInt2{X: 22, Y: 82}},
+	)
+
 }
 
 // OnStop method
@@ -102,7 +84,7 @@ func (st *MenuState) Update(world *ecs.World) states.Transition {
 		return states.Transition{Type: states.TransQuit}
 	}
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyG) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyS) {
 		return states.Transition{Type: states.TransSwitch, NewStates: []states.State{&GameplayState{}}}
 	}
 
