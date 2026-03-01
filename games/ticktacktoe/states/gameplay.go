@@ -41,6 +41,12 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 		return
 	}
 
+	spriteSheet2, ok := (*spriteSheets)["GameEngineBackground"]
+	if !ok {
+		log.Error("SpriteSheet 'game' not found")
+		return
+	}
+
 	mapper2 := ecs.NewMap2[gc.SpriteRender, gc.Transform](world)
 
 	mapper2.NewEntity(
@@ -50,6 +56,15 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 			Options:      ebiten.DrawImageOptions{},
 		},
 		&gc.Transform{Translation: math.Vector2{X: 133, Y: 220}},
+	)
+
+	mapper2.NewEntity(
+		&gc.SpriteRender{
+			SpriteSheet:  &spriteSheet2,
+			SpriteNumber: 0,
+			Options:      ebiten.DrawImageOptions{},
+		},
+		&gc.Transform{Translation: math.Vector2{X: 0, Y: 0}, Origin: "Middle"},
 	)
 
 	td := loader.TextData{

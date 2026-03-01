@@ -1,6 +1,6 @@
 [sprite_sheet.GameEngineBackground]
 texture_image = "../../assets/textures/background.png"
-sprites = [{ x = 0, y = 0, width = 64, height = 48 }]
+sprites = [{ x = 0, y = 0, width = 640, height = 480 }]
 
 [sprite_sheet.CubedBitsLogoSmall]
 texture_image = "../../assets/textures/CubedBitsLogoSmall.png"
