@@ -1,16 +1,11 @@
 package main
 
 import (
-	"bytes"
-	"fmt"
-	"image"
 	"image/color"
 	"log"
-	"log/slog"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/mlange-42/ark/ecs"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/assets"
 	ts "remapit.visualstudio.com/cubedbits/cubedbitsengine/games/ticktacktoe/states"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/loader"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/resources"
@@ -38,9 +33,9 @@ var (
 )
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	op := &ebiten.DrawImageOptions{}
+	//	op := &ebiten.DrawImageOptions{}
 
-	screen.DrawImage(gopherImage, op)
+	//	screen.DrawImage(gopherImage, op)
 	g.stateMachine.Draw(g.world, screen)
 
 	// slog.Info(fmt.Sprintf("%s%d", "Drawing game", gopherImage.Bounds().Max.X))
@@ -53,39 +48,25 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 
 func main() {
 
-	img, _, err := image.Decode(bytes.NewReader(assets.Background))
-	if err != nil {
-		log.Fatal(err)
-	}
+	// img, _, err := image.Decode(bytes.NewReader(assets.Background))
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
 	sse := loader.LoadSpriteSheets("../../assets/metadata/spritesheets/spritesheets.toml")
 	ss := loader.LoadSpriteSheets("assets/metadata/spritesheets/spritesheets.toml")
 
-	gopherImage = ebiten.NewImageFromImage(img)
+	//	gopherImage = ebiten.NewImageFromImage(img)
 
 	r := resources.InitResources()
 	r.ScreenDimensions = &resources.ScreenDimensions{Width: 640, Height: 480, Title: "TickTackToe"}
-	r.SpriteSheets = &ss
-	r.SpriteSheetsGame = &sse
+	r.SpriteSheets = &sse
+	r.SpriteSheetsGame = &ss
 
 	//	r := resources.ScreenDimensions{Width: 640, Height: 480, Title: "TickTackToe"}
 
 	w := ecs.NewWorld()
 	ecs.AddResource(w, r)
-
-	rresources := ecs.GetResource[resources.Resources](w)
-
-	r.ScreenDimensions.Height = 481
-	rspriteSheets := rresources.SpriteSheetsGame
-	rspriteSheet := (*rspriteSheets)["game"]
-
-	slog.Info(fmt.Sprintf("%d", len(rspriteSheet.Sprites)))
-
-	//	slog.Info(fmt.Sprintf("%d", spriteSheets.SpriteSheets["background"].Sprites[0].Width))
-	//slog.Info(fmt.Sprintf("%d", len(spriteSheets.SpriteSheets)))
-
-	//	ecs.AddResource(w, &spriteSheets)
-	//	ecs.AddResource(w, &spriteSheetsEngine)
 
 	// Load fonts
 	fonts := loader.LoadFonts("../../assets/metadata/fonts/fonts.toml")
