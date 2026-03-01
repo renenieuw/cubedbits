@@ -35,7 +35,7 @@ func (st *MenuState) OnStart(world *ecs.World) {
 	log.Info("Menu.Start")
 
 	resources := ecs.GetResource[resources.Resources](world)
-	spriteSheets := resources.SpriteSheetsGame
+	spriteSheets := resources.SpriteSheets
 	spriteSheet, ok := (*spriteSheets)["game"]
 	if !ok {
 		log.Error("SpriteSheet 'game' not found")

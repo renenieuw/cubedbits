@@ -3,6 +3,7 @@ package main
 import (
 	"image/color"
 	"log"
+	"maps"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/mlange-42/ark/ecs"
@@ -48,20 +49,20 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 
 func main() {
 
-	// img, _, err := image.Decode(bytes.NewReader(assets.Background))
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
 	sse := loader.LoadSpriteSheets("../../assets/metadata/spritesheets/spritesheets.toml")
 	ss := loader.LoadSpriteSheets("assets/metadata/spritesheets/spritesheets.toml")
 
-	//	gopherImage = ebiten.NewImageFromImage(img)
+	log.Printf("len ss %d", len(ss))
+	log.Printf("len sse %d", len(sse))
+
+	maps.Copy(sse, ss)
+
+	log.Printf("len ss %d", len(ss))
+	log.Printf("len sse %d", len(sse))
 
 	r := resources.InitResources()
 	r.ScreenDimensions = &resources.ScreenDimensions{Width: 640, Height: 480, Title: "TickTackToe"}
 	r.SpriteSheets = &sse
-	r.SpriteSheetsGame = &ss
 
 	//	r := resources.ScreenDimensions{Width: 640, Height: 480, Title: "TickTackToe"}
 

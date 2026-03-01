@@ -33,7 +33,7 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 	// var resources = ecs.GetResource[resources.Resources](world)
 	// spriteSheets := resources.SpriteSheetsGame
 	resources := ecs.GetResource[resources.Resources](world)
-	spriteSheets := resources.SpriteSheetsGame
+	spriteSheets := resources.SpriteSheets
 
 	spriteSheet, ok := (*spriteSheets)["game"]
 	if !ok {

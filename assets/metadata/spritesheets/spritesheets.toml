@@ -1,4 +1,4 @@
-[sprite_sheet.background]
+[sprite_sheet.GameEngineBackground]
 texture_image = "../../assets/textures/background.png"
 sprites = [{ x = 0, y = 0, width = 64, height = 48 }]
 
