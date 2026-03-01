@@ -58,18 +58,34 @@ func main() {
 		log.Fatal(err)
 	}
 
+	sse := loader.LoadSpriteSheets("../../assets/metadata/spritesheets/spritesheets.toml")
+	ss := loader.LoadSpriteSheets("assets/metadata/spritesheets/spritesheets.toml")
+
 	gopherImage = ebiten.NewImageFromImage(img)
 
-	r := resources.ScreenDimensions{Width: 640, Height: 480, Title: "TickTackToe"}
+	r := resources.InitResources()
+	r.ScreenDimensions = &resources.ScreenDimensions{Width: 640, Height: 480, Title: "TickTackToe"}
+	r.SpriteSheets = &ss
+	r.SpriteSheetsGame = &sse
+
+	//	r := resources.ScreenDimensions{Width: 640, Height: 480, Title: "TickTackToe"}
 
 	w := ecs.NewWorld()
-	ecs.AddResource(w, &r)
+	ecs.AddResource(w, r)
 
-	spriteSheets := loader.LoadSpriteSheets("../../assets/metadata/spritesheets/spritesheets.toml")
-	slog.Info(fmt.Sprintf("%d", spriteSheets.SpriteSheets["background"].Sprites[0].Width))
-	slog.Info(fmt.Sprintf("%d", len(spriteSheets.SpriteSheets)))
+	rresources := ecs.GetResource[resources.Resources](w)
 
-	ecs.AddResource(w, &spriteSheets)
+	r.ScreenDimensions.Height = 481
+	rspriteSheets := rresources.SpriteSheetsGame
+	rspriteSheet := (*rspriteSheets)["game"]
+
+	slog.Info(fmt.Sprintf("%d", len(rspriteSheet.Sprites)))
+
+	//	slog.Info(fmt.Sprintf("%d", spriteSheets.SpriteSheets["background"].Sprites[0].Width))
+	//slog.Info(fmt.Sprintf("%d", len(spriteSheets.SpriteSheets)))
+
+	//	ecs.AddResource(w, &spriteSheets)
+	//	ecs.AddResource(w, &spriteSheetsEngine)
 
 	// Load fonts
 	fonts := loader.LoadFonts("../../assets/metadata/fonts/fonts.toml")

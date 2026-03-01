@@ -8,6 +8,7 @@ import (
 	gc "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/loader"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/math"
+	"remapit.visualstudio.com/cubedbits/cubedbitsengine/resources"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/states"
 )
 
@@ -29,8 +30,16 @@ func (st *GameplayState) OnResume(world *ecs.World) {
 func (st *GameplayState) OnStart(world *ecs.World) {
 	log.Info("Gameplay.Start")
 
-	spriteSheets := ecs.GetResource[loader.SpriteSheetMetadata](world)
-	spriteSheet := spriteSheets.SpriteSheets["game"]
+	// var resources = ecs.GetResource[resources.Resources](world)
+	// spriteSheets := resources.SpriteSheetsGame
+	resources := ecs.GetResource[resources.Resources](world)
+	spriteSheets := resources.SpriteSheetsGame
+
+	spriteSheet, ok := (*spriteSheets)["game"]
+	if !ok {
+		log.Error("SpriteSheet 'game' not found")
+		return
+	}
 
 	mapper2 := ecs.NewMap2[gc.SpriteRender, gc.Transform](world)
 

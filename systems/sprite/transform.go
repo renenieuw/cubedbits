@@ -34,8 +34,9 @@ func TransformSystem(world *ecs.World) {
 		// Perform rotation
 		sprite.Options.GeoM.Rotate(-transform.Rotation)
 
-		sd := ecs.NewResource[resources.ScreenDimensions](world)
-		screenDimensions := sd.Get()
+		resources := ecs.GetResource[resources.Resources](world)
+		//		sd := ecs.NewResource[resources.ScreenDimensions](world)
+		screenDimensions := resources.ScreenDimensions
 
 		// Perform translation
 		screenWidth := float64(screenDimensions.Width)

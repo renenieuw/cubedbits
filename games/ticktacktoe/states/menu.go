@@ -1,6 +1,8 @@
 package states
 
 import (
+	"fmt"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/labstack/gommon/log"
@@ -8,6 +10,7 @@ import (
 	gc "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/loader"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/math"
+	"remapit.visualstudio.com/cubedbits/cubedbitsengine/resources"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/states"
 )
 
@@ -29,9 +32,17 @@ func (st *MenuState) OnResume(world *ecs.World) {
 // OnStart method
 func (st *MenuState) OnStart(world *ecs.World) {
 	log.Info("Menu.Start")
+	log.Info("Menu.Start")
 
-	spriteSheets := ecs.GetResource[loader.SpriteSheetMetadata](world)
-	spriteSheet := spriteSheets.SpriteSheets["game"]
+	resources := ecs.GetResource[resources.Resources](world)
+	spriteSheets := resources.SpriteSheetsGame
+	spriteSheet, ok := (*spriteSheets)["game"]
+	if !ok {
+		log.Error("SpriteSheet 'game' not found")
+		return
+	}
+
+	log.Info(fmt.Sprintf("%d", len(spriteSheet.Sprites)))
 
 	mapper2 := ecs.NewMap2[gc.SpriteRender, gc.Transform](world)
 
