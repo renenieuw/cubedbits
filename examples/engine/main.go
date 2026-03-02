@@ -7,7 +7,6 @@ import (
 	"math/rand/v2"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 
 	"github.com/mlange-42/ark/ecs"
@@ -51,7 +50,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 
 	//	ebitenutil.DrawRect(screen, 11, 12, settings.Scale, settings.Scale, particleData.Color)
-	ebitenutil.DebugPrint(screen, "Hello, starss2!")
+	//ebitenutil.DebugPrint(screen, "Hello, starss2!")
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {

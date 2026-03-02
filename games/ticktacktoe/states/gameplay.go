@@ -6,6 +6,8 @@ import (
 	"github.com/labstack/gommon/log"
 	"github.com/mlange-42/ark/ecs"
 	gc "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
+	tc "remapit.visualstudio.com/cubedbits/cubedbitsengine/games/ticktacktoe/components"
+	ts "remapit.visualstudio.com/cubedbits/cubedbitsengine/games/ticktacktoe/systems"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/loader"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/math"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/resources"
@@ -13,7 +15,9 @@ import (
 )
 
 // GameplayState is the main game state
-type GameplayState struct{}
+type GameplayState struct {
+	index int
+}
 
 // OnPause method
 func (st *GameplayState) OnPause(world *ecs.World) {
@@ -35,13 +39,7 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 	resources := ecs.GetResource[resources.Resources](world)
 	spriteSheets := resources.SpriteSheets
 
-	spriteSheet, ok := (*spriteSheets)["game"]
-	if !ok {
-		log.Error("SpriteSheet 'game' not found")
-		return
-	}
-
-	spriteSheet2, ok := (*spriteSheets)["GameEngineBackground"]
+	spriteSheetBigBackground, ok := (*spriteSheets)["background"]
 	if !ok {
 		log.Error("SpriteSheet 'game' not found")
 		return
@@ -51,16 +49,7 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 
 	mapper2.NewEntity(
 		&gc.SpriteRender{
-			SpriteSheet:  &spriteSheet,
-			SpriteNumber: 3,
-			Options:      ebiten.DrawImageOptions{},
-		},
-		&gc.Transform{Translation: math.Vector2{X: 133, Y: 220}},
-	)
-
-	mapper2.NewEntity(
-		&gc.SpriteRender{
-			SpriteSheet:  &spriteSheet2,
+			SpriteSheet:  &spriteSheetBigBackground,
 			SpriteNumber: 0,
 			Options:      ebiten.DrawImageOptions{},
 		},
@@ -82,20 +71,6 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 		&gc.UITransform{Translation: math.VectorInt2{X: 220, Y: 220}},
 	)
 
-	mapper := ecs.NewMap1[gc.SpriteRender](world)
-	// mapperText := ecs.NewMap1[gc.Text](w)
-
-	for range 30 {
-		_ = mapper.NewEntity(
-
-			&gc.SpriteRender{
-				SpriteSheet:  &spriteSheet,
-				SpriteNumber: 3,
-				Options:      ebiten.DrawImageOptions{},
-			},
-		)
-	}
-
 }
 
 // OnStop method
@@ -113,13 +88,11 @@ func (st *GameplayState) OnStop(world *ecs.World) {
 
 	log.Info("Gameplay.Stop")
 
-	// world.Resources.Game = nil
-	// world.Manager.DeleteAllEntities()
 }
 
 // Update method
 func (st *GameplayState) Update(world *ecs.World) states.Transition {
-	// DemoSystem(world)
+	ts.TileSystem(world)
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 		return states.Transition{Type: states.TransQuit}
@@ -131,6 +104,30 @@ func (st *GameplayState) Update(world *ecs.World) states.Transition {
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyQ) {
 		return states.Transition{Type: states.TransSwitch, NewStates: []states.State{&GameOverMenuState{}}}
+	}
+
+	mapper3 := ecs.NewMap3[gc.SpriteRender, gc.Transform, tc.Tile](world)
+
+	if inpututil.IsKeyJustPressed(ebiten.Key1) {
+
+		resources := ecs.GetResource[resources.Resources](world)
+		spriteSheets := resources.SpriteSheets
+
+		spriteSheetTiles, ok := (*spriteSheets)["Tiles"]
+		if !ok {
+			log.Error("SpriteSheet 'Tiles' not found")
+		}
+
+		mapper3.NewEntity(
+			&gc.SpriteRender{
+				SpriteSheet:  &spriteSheetTiles,
+				SpriteNumber: 0,
+				Options:      ebiten.DrawImageOptions{},
+			},
+			&gc.Transform{Translation: math.Vector2{X: -140, Y: -140}, Origin: "Middle", Scale1: math.Vector2{X: -0.75, Y: -0.75}},
+			&tc.Tile{X: st.index % 3, Y: st.index / 3, State: (st.index % 2)},
+		)
+		st.index++
 	}
 
 	return states.Transition{}
