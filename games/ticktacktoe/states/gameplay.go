@@ -113,10 +113,6 @@ func (st *GameplayState) Update(world *ecs.World) states.Transition {
 		return states.Transition{Type: states.TransSwitch, NewStates: []states.State{&MainMenuState{}}}
 	}
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyQ) {
-		return states.Transition{Type: states.TransSwitch, NewStates: []states.State{&GameOverMenuState{}}}
-	}
-
 	mapper3 := ecs.NewMap3[gc.SpriteRender, gc.Transform, tc.Tile](world)
 
 	if inpututil.IsKeyJustPressed(ebiten.Key1) {
