@@ -3,94 +3,79 @@ package states
 import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
-	"github.com/labstack/gommon/log"
 	"github.com/mlange-42/ark/ecs"
 	gc "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/loader"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/math"
+	"remapit.visualstudio.com/cubedbits/cubedbitsengine/games/ticktacktoe/math"
+	m "remapit.visualstudio.com/cubedbits/cubedbitsengine/math"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/states"
 )
 
-type MenuState struct {
-	selection int
+type menu interface {
+	getSelection() int
+	setSelection(selection int)
+	confirmSelection() states.Transition
+	getMenuIDs() []string
+	getCursorMenuIDs() []string
 }
 
-// OnPause method
-func (st *MenuState) OnPause(world *ecs.World) {
-	log.Info("Menu.OnPause")
+var menuLastCursorPosition = m.VectorInt2{}
 
-}
+func updateMenu(menu menu, world *ecs.World) states.Transition {
+	var transition states.Transition
+	selection := menu.getSelection()
+	numItems := len(menu.getCursorMenuIDs())
 
-// OnResume method
-func (st *MenuState) OnResume(world *ecs.World) {
-	log.Info("Menu.Resume")
-}
-
-// OnStart method
-func (st *MenuState) OnStart(world *ecs.World) {
-	mapperText := ecs.NewMap2[gc.Text, gc.UITransform](world)
-
-	td := loader.TextData{
-		ID:       "menu",
-		Text:     "Menu",
-		FontFace: loader.FontFaceData{Font: "joystix", Options: loader.FontFaceOptions{Size: 25.0}},
-		Color:    [4]uint8{255, 0, 0, 255},
-	}
-	tt := loader.ProcessTextData(world, &td)
-
-	mapperText.NewEntity(
-		tt,
-		&gc.UITransform{Translation: math.VectorInt2{X: 22, Y: 22}},
-	)
-
-	td.Text = "S to start game"
-	tt = loader.ProcessTextData(world, &td)
-
-	mapperText.NewEntity(
-		tt,
-		&gc.UITransform{Translation: math.VectorInt2{X: 22, Y: 52}},
-	)
-
-	td.Text = "Q to quit game"
-	tt = loader.ProcessTextData(world, &td)
-
-	mapperText.NewEntity(
-		tt,
-		&gc.UITransform{Translation: math.VectorInt2{X: 22, Y: 82}},
-	)
-
-}
-
-// OnStop method
-func (st *MenuState) OnStop(world *ecs.World) {
-	filter := ecs.NewFilter1[gc.SpriteRender](world)
-	world.RemoveEntities(filter.Batch(), func(entity ecs.Entity) {
-		log.Info("Removing", entity)
-	})
-
-	filter2 := ecs.NewFilter1[gc.Text](world)
-	world.RemoveEntities(filter2.Batch(), func(entity ecs.Entity) {
-		log.Info("Removing", entity)
-	})
-
-	log.Info("Menu.Stop")
-}
-
-// Update method
-func (st *MenuState) Update(world *ecs.World) states.Transition {
-	// DemoSystem(world)
-
-	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-		return states.Transition{Type: states.TransQuit}
+	// Handle keyboard events
+	switch {
+	case inpututil.IsKeyJustPressed(ebiten.KeyDown):
+		menu.setSelection(math.Mod(selection+1, numItems))
+	case inpututil.IsKeyJustPressed(ebiten.KeyUp):
+		menu.setSelection(math.Mod(selection-1, numItems))
+	case inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace):
+		return menu.confirmSelection()
 	}
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyS) {
-		return states.Transition{Type: states.TransSwitch, NewStates: []states.State{&GameplayState{}}}
+	filter := ecs.NewFilter3[gc.SpriteRender, gc.Transform, gc.MouseReactive](world)
+
+	// Handle mouse events only if mouse is moved or clicked
+	x, y := ebiten.CursorPosition()
+	if x != menuLastCursorPosition.X || y != menuLastCursorPosition.Y || inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
+		for iElem, id := range menu.getMenuIDs() {
+			menuLastCursorPosition = m.VectorInt2{X: x, Y: y}
+			query := filter.Query()
+			for query.Next() {
+				_, _, mouseReactive := query.Get()
+				if mouseReactive.ID == id && mouseReactive.Hovered {
+					menu.setSelection(iElem)
+					if mouseReactive.JustClicked {
+						transition = menu.confirmSelection()
+					}
+				}
+			}
+		}
 	}
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyQ) {
-		return states.Transition{Type: states.TransQuit}
-	}
+	filterText := ecs.NewFilter1[gc.Text](world)
 
-	return states.Transition{}
+	// Set cursor color
+	newSelection := menu.getSelection()
+	for iCursor, id := range menu.getCursorMenuIDs() {
+		query := filterText.Query()
+		for query.Next() {
+			text := query.Get()
+
+			if text.ID == id {
+				text.Color.A = 0
+				text.Color.R = 0
+				text.Color.G = 0
+				text.Color.B = 0
+				if iCursor == newSelection {
+					text.Color.R = 255
+					text.Color.G = 255
+					text.Color.B = 255
+				}
+			}
+		}
+	}
+	return transition
 }

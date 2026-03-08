@@ -9,6 +9,7 @@ import (
 	w "github.com/mlange-42/ark/ecs"
 	"golang.org/x/image/font"
 	c "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
+	"remapit.visualstudio.com/cubedbits/cubedbitsengine/resources"
 	"remapit.visualstudio.com/cubedbits/cubedbitsengine/utils"
 
 	"github.com/BurntSushi/toml"
@@ -77,7 +78,7 @@ func AddEntityComponents(entity ecs.Entity, ecsComponentList interface{}, compon
 }
 
 type engineComponentListData struct {
-	SpriteRender *spriteRenderData
+	SpriteRender *SpriteRenderData
 	Transform    *c.Transform
 }
 
@@ -103,7 +104,7 @@ func LoadEngineComponents(entityMetadataContent []byte, world *w.World) []Engine
 
 func processComponentsListData(world *w.World, data engineComponentListData) EngineComponentList {
 	return EngineComponentList{
-		SpriteRender: processSpriteRenderData(world, data.SpriteRender),
+		SpriteRender: ProcessSpriteRenderData(world, data.SpriteRender),
 		Transform:    data.Transform,
 	}
 }
@@ -112,47 +113,50 @@ func processComponentsListData(world *w.World, data engineComponentListData) Eng
 // SpriteRender
 //
 
-type fillData struct {
+type FillData struct {
 	Width  int
 	Height int
 	Color  [4]uint8
 }
 
-type spriteRenderData struct {
-	Fill            *fillData
+type SpriteRenderData struct {
+	Fill            *FillData
 	SpriteSheetName string `toml:"sprite_sheet_name"`
 	SpriteNumber    int    `toml:"sprite_number"`
 }
 
-func processSpriteRenderData(world *w.World, spriteRenderData *spriteRenderData) *c.SpriteRender {
+func ProcessSpriteRenderData(world *w.World, spriteRenderData *SpriteRenderData) *c.SpriteRender {
 	if spriteRenderData == nil {
 		return nil
 	}
-	// if spriteRenderData.Fill != nil && spriteRenderData.SpriteSheetName != "" {
-	// 	utils.LogFatalf("fill and sprite_sheet_name fields are exclusive")
-	// }
+	if spriteRenderData.Fill != nil && spriteRenderData.SpriteSheetName != "" {
+		utils.LogFatalf("fill and sprite_sheet_name fields are exclusive")
+	}
 
-	// // Sprite is included in sprite sheet
-	// if spriteRenderData.SpriteSheetName != "" {
-	// 	// Add reference to sprite sheet
-	// 	spriteSheet, ok := (*world.Resources.SpriteSheets)[spriteRenderData.SpriteSheetName]
-	// 	if !ok {
-	// 		utils.LogFatalf("unable to find sprite sheet with name '%s'", spriteRenderData.SpriteSheetName)
-	// 	}
-	// 	return &c.SpriteRender{
-	// 		SpriteSheet:  &spriteSheet,
-	// 		SpriteNumber: spriteRenderData.SpriteNumber,
-	// 	}
-	// }
+	// Sprite is included in sprite sheet
+	if spriteRenderData.SpriteSheetName != "" {
+
+		resources := ecs.GetResource[resources.Resources](world)
+
+		// Add reference to sprite sheet
+		spriteSheet, ok := (*resources.SpriteSheets)[spriteRenderData.SpriteSheetName]
+		if !ok {
+			utils.LogFatalf("unable to find sprite sheet with name '%s'", spriteRenderData.SpriteSheetName)
+		}
+		return &c.SpriteRender{
+			SpriteSheet:  &spriteSheet,
+			SpriteNumber: spriteRenderData.SpriteNumber,
+		}
+	}
 
 	// // Sprite is a colored rectangle
 	textureImage := ebiten.NewImage(spriteRenderData.Fill.Width, spriteRenderData.Fill.Height)
-	// textureImage.Fill(color.RGBA{
-	// 	R: spriteRenderData.Fill.Color[0],
-	// 	G: spriteRenderData.Fill.Color[1],
-	// 	B: spriteRenderData.Fill.Color[2],
-	// 	A: spriteRenderData.Fill.Color[3],
-	// })
+	textureImage.Fill(color.RGBA{
+		R: spriteRenderData.Fill.Color[0],
+		G: spriteRenderData.Fill.Color[1],
+		B: spriteRenderData.Fill.Color[2],
+		A: spriteRenderData.Fill.Color[3],
+	})
 
 	return &c.SpriteRender{
 		SpriteSheet: &c.SpriteSheet{

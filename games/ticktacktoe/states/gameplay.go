@@ -46,6 +46,7 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 	}
 
 	mapper2 := ecs.NewMap2[gc.SpriteRender, gc.Transform](world)
+	mapper3 := ecs.NewMap3[gc.SpriteRender, gc.Transform, gc.MouseReactive](world)
 
 	mapper2.NewEntity(
 		&gc.SpriteRender{
@@ -63,6 +64,16 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 		Color:    [4]uint8{255, 0, 0, 255},
 	}
 	tt := loader.ProcessTextData(world, &td)
+
+	srd := loader.SpriteRenderData{Fill: &loader.FillData{Width: 40, Height: 40, Color: [4]uint8{255, 0, 0, 255}}}
+
+	srg := loader.ProcessSpriteRenderData(world, &srd)
+
+	mapper3.NewEntity(
+		srg,
+		&gc.Transform{Translation: math.Vector2{X: 0, Y: 0}, Origin: "Middle"},
+		&gc.MouseReactive{ID: "test1"},
+	)
 
 	mapperText := ecs.NewMap2[gc.Text, gc.UITransform](world)
 
@@ -99,7 +110,7 @@ func (st *GameplayState) Update(world *ecs.World) states.Transition {
 	}
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyM) {
-		return states.Transition{Type: states.TransSwitch, NewStates: []states.State{&MenuState{}}}
+		return states.Transition{Type: states.TransSwitch, NewStates: []states.State{&MainMenuState{}}}
 	}
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyQ) {

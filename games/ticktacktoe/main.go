@@ -41,6 +41,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	// slog.Info(fmt.Sprintf("%s%d", "Drawing game", gopherImage.Bounds().Max.X))
 	// ebitenutil.DrawRect(screen, 11, 12, settings.Scale, settings.Scale, particleData.Color)
+	//
+
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
@@ -52,13 +54,7 @@ func main() {
 	sse := loader.LoadSpriteSheets("../../assets/metadata/spritesheets/spritesheets.toml")
 	ss := loader.LoadSpriteSheets("assets/metadata/spritesheets/spritesheets.toml")
 
-	log.Printf("len ss %d", len(ss))
-	log.Printf("len sse %d", len(sse))
-
 	maps.Copy(sse, ss)
-
-	log.Printf("len ss %d", len(ss))
-	log.Printf("len sse %d", len(sse))
 
 	r := resources.InitResources()
 	r.ScreenDimensions = &resources.ScreenDimensions{Width: 640, Height: 480, Title: "TickTackToe"}
@@ -75,7 +71,7 @@ func main() {
 
 	ebiten.SetWindowSize(640, 480)
 	ebiten.SetWindowTitle("Starss")
-	if err := ebiten.RunGame(&Game{w, st.Init(&ts.MenuState{}, w)}); err != nil {
+	if err := ebiten.RunGame(&Game{w, st.Init(&ts.MainMenuState{}, w)}); err != nil {
 		log.Fatal(err)
 	}
 }

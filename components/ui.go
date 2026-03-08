@@ -90,6 +90,10 @@ type MouseReactive struct {
 	JustClicked bool
 }
 
+type MenuItem struct {
+	ID string
+}
+
 // ComputeDotOffset computes dot offset from text and pivot
 func ComputeDotOffset(text string, fontFace font.Face, pivot string) (x, y int, err error) {
 	bounds, _ := font.BoundString(fontFace, text)

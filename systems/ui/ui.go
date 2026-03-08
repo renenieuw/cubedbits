@@ -1,32 +1,40 @@
 package uisystem
 
 import (
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	ecs "github.com/mlange-42/ark/ecs"
+	c "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
+	"remapit.visualstudio.com/cubedbits/cubedbitsengine/resources"
 )
 
 // UISystem sets mouse reactive components
 func UISystem(world *ecs.World) {
-	// world.Manager.Join(world.Components.Engine.SpriteRender, world.Components.Engine.Transform, world.Components.Engine.MouseReactive).Visit(ecs.Visit(func(entity ecs.Entity) {
-	// 	sprite := world.Components.Engine.SpriteRender.Get(entity).(*c.SpriteRender)
-	// 	transform := world.Components.Engine.Transform.Get(entity).(*c.Transform)
-	// 	mouseReactive := world.Components.Engine.MouseReactive.Get(entity).(*c.MouseReactive)
+	filter := ecs.NewFilter3[c.SpriteRender, c.Transform, c.MouseReactive](world)
+	query := filter.Query()
+	for query.Next() {
+		sprite, transform, mouseReactive := query.Get()
 
-	// 	screenWidth := float64(world.Resources.ScreenDimensions.Width)
-	// 	screenHeight := float64(world.Resources.ScreenDimensions.Height)
+		resources := ecs.GetResource[resources.Resources](world)
 
-	// 	spriteWidth := float64(sprite.SpriteSheet.Sprites[sprite.SpriteNumber].Width)
-	// 	spriteHeight := float64(sprite.SpriteSheet.Sprites[sprite.SpriteNumber].Height)
+		screenWidth := float64(resources.ScreenDimensions.Width)
+		screenHeight := float64(resources.ScreenDimensions.Height)
 
-	// 	offsetX, offsetY := transform.ComputeOriginOffset(screenWidth, screenHeight)
+		spriteWidth := float64(sprite.SpriteSheet.Sprites[sprite.SpriteNumber].Width)
+		spriteHeight := float64(sprite.SpriteSheet.Sprites[sprite.SpriteNumber].Height)
 
-	// 	minX := (offsetX + transform.Translation.X) - spriteWidth/2
-	// 	maxX := (offsetX + transform.Translation.X) + spriteWidth/2
-	// 	minY := screenHeight - (offsetY + transform.Translation.Y) - spriteHeight/2
-	// 	maxY := screenHeight - (offsetY + transform.Translation.Y) + spriteHeight/2
+		offsetX, offsetY := transform.ComputeOriginOffset(screenWidth, screenHeight)
 
-	// 	x, y := ebiten.CursorPosition()
+		minX := (offsetX + transform.Translation.X) - spriteWidth/2
+		maxX := (offsetX + transform.Translation.X) + spriteWidth/2
+		minY := screenHeight - (offsetY + transform.Translation.Y) - spriteHeight/2
+		maxY := screenHeight - (offsetY + transform.Translation.Y) + spriteHeight/2
 
-	// 	mouseReactive.Hovered = minX <= float64(x) && float64(x) <= maxX && minY <= float64(y) && float64(y) <= maxY
-	// 	mouseReactive.JustClicked = mouseReactive.Hovered && inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft)
-	// }))
+		x, y := ebiten.CursorPosition()
+
+		mouseReactive.Hovered = minX <= float64(x) && float64(x) <= maxX && minY <= float64(y) && float64(y) <= maxY
+		mouseReactive.JustClicked = mouseReactive.Hovered && inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft)
+
+	}
+
 }
