@@ -1,6 +1,8 @@
 package states
 
 import (
+	"fmt"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/labstack/gommon/log"
@@ -16,13 +18,22 @@ import (
 
 // GameplayState is the main game state
 type GameplayState struct {
-	index int
+	index      int
+	turn       int
+	TileSystem ts.TileSystem
 }
 
 // OnPause method
 func (st *GameplayState) OnPause(world *ecs.World) {
 	log.Info("Gameplay.OnPause")
+}
 
+func (st *GameplayState) GetTurn() int {
+	return st.turn
+}
+
+func (st *GameplayState) SetTurn(turn int) {
+	st.turn = turn
 }
 
 // OnResume method
@@ -33,6 +44,8 @@ func (st *GameplayState) OnResume(world *ecs.World) {
 // OnStart method
 func (st *GameplayState) OnStart(world *ecs.World) {
 	log.Info("Gameplay.Start")
+
+	st.TileSystem = ts.TileSystem{}
 
 	// var resources = ecs.GetResource[resources.Resources](world)
 	// spriteSheets := resources.SpriteSheetsGame
@@ -71,7 +84,7 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 
 	mapper3.NewEntity(
 		srg,
-		&gc.Transform{Translation: math.Vector2{X: 0, Y: 0}, Origin: "Middle"},
+		&gc.Transform{Translation: math.Vector2{X: 220, Y: 220}},
 		&gc.MouseReactive{ID: "test1"},
 	)
 
@@ -82,6 +95,38 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 		&gc.UITransform{Translation: math.VectorInt2{X: 220, Y: 220}},
 	)
 
+	InitTiles(world)
+
+}
+
+func InitTiles(world *ecs.World) {
+
+	resources := ecs.GetResource[resources.Resources](world)
+	spriteSheets := resources.SpriteSheets
+
+	spriteSheetTiles, ok := (*spriteSheets)["Tiles"]
+
+	if !ok {
+		log.Error("SpriteSheet 'Tiles' not found")
+	}
+
+	for i := 0; i < 3; i++ {
+		for j := 0; j < 3; j++ {
+
+			//			srd := loader.SpriteRenderData{Fill: &loader.FillData{Width: 138, Height: 138, Color: [4]uint8{255, 128, 128, 255}}}
+
+			//			srg := loader.ProcessSpriteRenderData(world, &srd)
+
+			mapper := ecs.NewMap4[gc.SpriteRender, gc.Transform, gc.MouseReactive, tc.Tile](world)
+
+			mapper.NewEntity(
+				&gc.SpriteRender{SpriteSheet: &spriteSheetTiles, SpriteNumber: 0, Options: ebiten.DrawImageOptions{}},
+				&gc.Transform{Translation: math.Vector2{X: float64(j*140) + 180, Y: float64(i*140) + 100}},
+				&gc.MouseReactive{ID: fmt.Sprint("test", "", j, " - ", i)},
+				&tc.Tile{X: j, Y: i, State: 0},
+			)
+		}
+	}
 }
 
 // OnStop method
@@ -103,7 +148,7 @@ func (st *GameplayState) OnStop(world *ecs.World) {
 
 // Update method
 func (st *GameplayState) Update(world *ecs.World) states.Transition {
-	ts.TileSystem(world)
+	st.TileSystem.Update(world)
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 		return states.Transition{Type: states.TransQuit}

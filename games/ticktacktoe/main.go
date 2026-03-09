@@ -71,7 +71,7 @@ func main() {
 
 	ebiten.SetWindowSize(640, 480)
 	ebiten.SetWindowTitle("Starss")
-	if err := ebiten.RunGame(&Game{w, st.Init(&ts.MainMenuState{}, w)}); err != nil {
+	if err := ebiten.RunGame(&Game{w, st.Init(&ts.GameplayState{}, w)}); err != nil {
 		log.Fatal(err)
 	}
 }

@@ -35,6 +35,7 @@ func UISystem(world *ecs.World) {
 		mouseReactive.Hovered = minX <= float64(x) && float64(x) <= maxX && minY <= float64(y) && float64(y) <= maxY
 		mouseReactive.JustClicked = mouseReactive.Hovered && inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft)
 
+		//	log.Printf("%s %t", mouseReactive.ID, mouseReactive.Hovered)
 	}
 
 }

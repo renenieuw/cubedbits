@@ -5,8 +5,9 @@ sprites = [{ x = 0, y = 0, width = 640, height = 480 }]
 [sprite_sheet.Tiles]
 texture_image = "assets/textures/Tiles.png"
 sprites = [
-    { x = 0, y = 0, width = 512, height = 512 },
-    { x = 512, y = 0, width = 512, height = 512 },
+    { x = 0, y = 0, width = 128, height = 128 },
+    { x = 128, y = 0, width = 128, height = 128 },
+    { x = 256, y = 0, width = 128, height = 128 },
 ]
 
 [sprite_sheet.game]
