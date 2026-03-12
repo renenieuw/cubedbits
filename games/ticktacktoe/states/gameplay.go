@@ -7,13 +7,13 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/labstack/gommon/log"
 	"github.com/mlange-42/ark/ecs"
-	gc "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
-	tc "remapit.visualstudio.com/cubedbits/cubedbitsengine/games/ticktacktoe/components"
-	ts "remapit.visualstudio.com/cubedbits/cubedbitsengine/games/ticktacktoe/systems"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/loader"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/math"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/resources"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/states"
+	gc "github.com/renenieuw/cubedbits/components"
+	tc "github.com/renenieuw/cubedbits/games/ticktacktoe/components"
+	ts "github.com/renenieuw/cubedbits/games/ticktacktoe/systems"
+	"github.com/renenieuw/cubedbits/loader"
+	"github.com/renenieuw/cubedbits/math"
+	"github.com/renenieuw/cubedbits/resources"
+	"github.com/renenieuw/cubedbits/states"
 )
 
 // GameplayState is the main game state

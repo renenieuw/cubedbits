@@ -2,8 +2,8 @@ package spritesystem
 
 import (
 	ecs "github.com/mlange-42/ark/ecs"
-	c "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/resources"
+	c "github.com/renenieuw/cubedbits/components"
+	"github.com/renenieuw/cubedbits/resources"
 )
 
 // TransformSystem updates geometry matrix.

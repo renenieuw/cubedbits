@@ -7,10 +7,10 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/mlange-42/ark/ecs"
-	ts "remapit.visualstudio.com/cubedbits/cubedbitsengine/games/ticktacktoe/states"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/loader"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/resources"
-	st "remapit.visualstudio.com/cubedbits/cubedbitsengine/states"
+	ts "github.com/renenieuw/cubedbits/games/ticktacktoe/states"
+	"github.com/renenieuw/cubedbits/loader"
+	"github.com/renenieuw/cubedbits/resources"
+	st "github.com/renenieuw/cubedbits/states"
 )
 
 const (

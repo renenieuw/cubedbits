@@ -5,11 +5,11 @@ import (
 	"log"
 	"os"
 
-	c "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/libraries/texturepacker"
+	c "github.com/renenieuw/cubedbits/components"
+	"github.com/renenieuw/cubedbits/libraries/texturepacker"
 
-	// "remapit.visualstudio.com/cubedbits/cubedbitsengine/loader"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/math"
+	// "github.com/renenieuw/cubedbits/loader"
+	"github.com/renenieuw/cubedbits/math"
 )
 
 // type spriteSheetMetadata struct {

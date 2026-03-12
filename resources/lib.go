@@ -1,7 +1,7 @@
 package resources
 
 import (
-	c "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
+	c "github.com/renenieuw/cubedbits/components"
 )
 
 // Resources contains references to data not related to any entity

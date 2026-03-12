@@ -4,9 +4,9 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text"
 	ecs "github.com/mlange-42/ark/ecs"
-	c "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/resources"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/utils"
+	c "github.com/renenieuw/cubedbits/components"
+	"github.com/renenieuw/cubedbits/resources"
+	"github.com/renenieuw/cubedbits/utils"
 )
 
 // RenderUISystem draws text entities

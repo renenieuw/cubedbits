@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/mlange-42/ark/ecs"
-	c "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
-	tc "remapit.visualstudio.com/cubedbits/cubedbitsengine/games/ticktacktoe/components"
+	c "github.com/renenieuw/cubedbits/components"
+	tc "github.com/renenieuw/cubedbits/games/ticktacktoe/components"
 )
 
 type TileSystem struct {

@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/golang/freetype/truetype"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/utils"
+	"github.com/renenieuw/cubedbits/utils"
 )
 
 // Font structure

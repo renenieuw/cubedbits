@@ -1,8 +1,8 @@
 package loader
 
 import (
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/resources"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/utils"
+	"github.com/renenieuw/cubedbits/resources"
+	"github.com/renenieuw/cubedbits/utils"
 
 	"github.com/BurntSushi/toml"
 )

@@ -1,4 +1,4 @@
-module remapit.visualstudio.com/cubedbits/cubedbitsengine
+module github.com/renenieuw/cubedbits
 
 go 1.24.0
 

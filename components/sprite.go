@@ -3,8 +3,8 @@ package components
 import (
 	"fmt"
 
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/math"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/utils"
+	"github.com/renenieuw/cubedbits/math"
+	"github.com/renenieuw/cubedbits/utils"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"

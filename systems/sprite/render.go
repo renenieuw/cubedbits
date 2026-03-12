@@ -6,8 +6,8 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	ecs "github.com/mlange-42/ark/ecs"
-	c "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
-	m "remapit.visualstudio.com/cubedbits/cubedbitsengine/math"
+	c "github.com/renenieuw/cubedbits/components"
+	m "github.com/renenieuw/cubedbits/math"
 )
 
 func RenderSpriteSystem(world *ecs.World, screen *ebiten.Image) {

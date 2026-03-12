@@ -5,8 +5,8 @@ import (
 	"image/color"
 
 	"golang.org/x/image/font"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/math"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/utils"
+	"github.com/renenieuw/cubedbits/math"
+	"github.com/renenieuw/cubedbits/utils"
 )
 
 // Text component

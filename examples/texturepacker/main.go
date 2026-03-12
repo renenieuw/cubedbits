@@ -4,7 +4,7 @@ import (
 	_ "image/png"
 	"log"
 
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/loader"
+	"github.com/renenieuw/cubedbits/loader"
 )
 
 func main() {

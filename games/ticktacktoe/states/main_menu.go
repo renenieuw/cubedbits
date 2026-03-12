@@ -7,10 +7,10 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/labstack/gommon/log"
 	"github.com/mlange-42/ark/ecs"
-	gc "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/loader"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/math"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/states"
+	gc "github.com/renenieuw/cubedbits/components"
+	"github.com/renenieuw/cubedbits/loader"
+	"github.com/renenieuw/cubedbits/math"
+	"github.com/renenieuw/cubedbits/states"
 )
 
 type MainMenuState struct {

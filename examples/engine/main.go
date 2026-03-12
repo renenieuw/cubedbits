@@ -10,8 +10,8 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/vector"
 
 	"github.com/mlange-42/ark/ecs"
-	c "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
-	st "remapit.visualstudio.com/cubedbits/cubedbitsengine/states"
+	c "github.com/renenieuw/cubedbits/components"
+	st "github.com/renenieuw/cubedbits/states"
 )
 
 type Game struct{}

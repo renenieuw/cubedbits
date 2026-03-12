@@ -7,9 +7,9 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/labstack/gommon/log"
 	w "github.com/mlange-42/ark/ecs"
-	s "remapit.visualstudio.com/cubedbits/cubedbitsengine/systems/sprite"
-	u "remapit.visualstudio.com/cubedbits/cubedbitsengine/systems/ui"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/utils"
+	s "github.com/renenieuw/cubedbits/systems/sprite"
+	u "github.com/renenieuw/cubedbits/systems/ui"
+	"github.com/renenieuw/cubedbits/utils"
 )
 
 // TransType is a transition type

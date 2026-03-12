@@ -4,10 +4,10 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/mlange-42/ark/ecs"
-	gc "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/games/ticktacktoe/math"
-	m "remapit.visualstudio.com/cubedbits/cubedbitsengine/math"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/states"
+	gc "github.com/renenieuw/cubedbits/components"
+	"github.com/renenieuw/cubedbits/games/ticktacktoe/math"
+	m "github.com/renenieuw/cubedbits/math"
+	"github.com/renenieuw/cubedbits/states"
 )
 
 type menu interface {

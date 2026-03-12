@@ -8,9 +8,9 @@ import (
 	"github.com/mlange-42/ark/ecs"
 	w "github.com/mlange-42/ark/ecs"
 	"golang.org/x/image/font"
-	c "remapit.visualstudio.com/cubedbits/cubedbitsengine/components"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/resources"
-	"remapit.visualstudio.com/cubedbits/cubedbitsengine/utils"
+	c "github.com/renenieuw/cubedbits/components"
+	"github.com/renenieuw/cubedbits/resources"
+	"github.com/renenieuw/cubedbits/utils"
 
 	"github.com/BurntSushi/toml"
 )
