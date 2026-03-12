@@ -1,7 +1,7 @@
 package systems
 
 import (
-	"log"
+	"fmt"
 	"time"
 
 	"github.com/mlange-42/ark/ecs"
@@ -13,6 +13,9 @@ type TileSystem struct {
 	Turn        int
 	WonAt       time.Time
 	WinningLine [3][2]int
+	Player1Wins int
+	Player2Wins int
+	Draws       int
 }
 
 func (ts *TileSystem) Update(world *ecs.World) {
@@ -36,12 +39,24 @@ func (ts *TileSystem) Update(world *ecs.World) {
 		if ts.WonAt.IsZero() {
 			ts.WonAt = time.Now()
 			ts.WinningLine = line
+			if winner == 1 {
+				ts.Player1Wins++
+			} else {
+				ts.Player2Wins++
+			}
+		}
+	} else if ts.Turn >= 9 {
+		// Board is full (draw), start reset timer
+		if ts.WonAt.IsZero() {
+			ts.WonAt = time.Now()
+			// Set invalid coordinates so nothing blinks
+			ts.WinningLine = [3][2]int{{-1, -1}, {-1, -1}, {-1, -1}}
+			ts.Draws++
 		}
 	}
 
 	if !ts.WonAt.IsZero() {
 		ts.Blink(world)
-		log.Printf("%s", ts.WonAt.String())
 		if time.Since(ts.WonAt).Seconds() > 2 {
 			ts.WonAt = time.Time{}
 			ts.Turn = 0 // Reset turn too when resetting board
@@ -54,6 +69,14 @@ func (ts *TileSystem) Update(world *ecs.World) {
 			}
 		}
 	}
+
+	filterText := ecs.NewFilter2[c.Text, c.UITransform](world)
+	queryText := filterText.Query()
+	for queryText.Next() {
+		text, _ := queryText.Get()
+		text.Text = fmt.Sprintf("Score: %d - %d - %d", ts.Player1Wins, ts.Player2Wins, ts.Draws)
+	}
+
 }
 
 func CheckWon(world *ecs.World) bool {

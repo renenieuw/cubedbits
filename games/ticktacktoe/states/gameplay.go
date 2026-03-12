@@ -59,7 +59,7 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 	}
 
 	mapper2 := ecs.NewMap2[gc.SpriteRender, gc.Transform](world)
-	mapper3 := ecs.NewMap3[gc.SpriteRender, gc.Transform, gc.MouseReactive](world)
+	//mapper3 := ecs.NewMap3[gc.SpriteRender, gc.Transform, gc.MouseReactive](world)
 
 	mapper2.NewEntity(
 		&gc.SpriteRender{
@@ -71,28 +71,18 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 	)
 
 	td := loader.TextData{
-		ID:       "gameplay",
-		Text:     "gameplay",
+		ID:       "score",
+		Text:     "Score",
 		FontFace: loader.FontFaceData{Font: "joystix", Options: loader.FontFaceOptions{Size: 25.0}},
 		Color:    [4]uint8{255, 0, 0, 255},
 	}
 	tt := loader.ProcessTextData(world, &td)
 
-	srd := loader.SpriteRenderData{Fill: &loader.FillData{Width: 40, Height: 40, Color: [4]uint8{255, 0, 0, 255}}}
-
-	srg := loader.ProcessSpriteRenderData(world, &srd)
-
-	mapper3.NewEntity(
-		srg,
-		&gc.Transform{Translation: math.Vector2{X: 220, Y: 220}},
-		&gc.MouseReactive{ID: "test1"},
-	)
-
 	mapperText := ecs.NewMap2[gc.Text, gc.UITransform](world)
 
 	mapperText.NewEntity(
 		tt,
-		&gc.UITransform{Translation: math.VectorInt2{X: 220, Y: 220}},
+		&gc.UITransform{Translation: math.VectorInt2{X: 200, Y: 460}},
 	)
 
 	InitTiles(world)
@@ -112,10 +102,6 @@ func InitTiles(world *ecs.World) {
 
 	for i := 0; i < 3; i++ {
 		for j := 0; j < 3; j++ {
-
-			//			srd := loader.SpriteRenderData{Fill: &loader.FillData{Width: 138, Height: 138, Color: [4]uint8{255, 128, 128, 255}}}
-
-			//			srg := loader.ProcessSpriteRenderData(world, &srd)
 
 			mapper := ecs.NewMap4[gc.SpriteRender, gc.Transform, gc.MouseReactive, tc.Tile](world)
 
