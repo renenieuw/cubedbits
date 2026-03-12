@@ -42,9 +42,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			// Component access through the Query
 			pos, vel := query.Get()
 			// Update component fields
-			// pos.X += vel.DX
-			// pos.Y += vel.DY
-			//
+
 			vel.DX = 0
 			vel.DY = 0
 
