@@ -7,6 +7,8 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/mlange-42/ark/ecs"
+	ga "github.com/renenieuw/cubedbits/assets"
+	"github.com/renenieuw/cubedbits/games/ticktacktoe/assets"
 	ts "github.com/renenieuw/cubedbits/games/ticktacktoe/states"
 	"github.com/renenieuw/cubedbits/loader"
 	"github.com/renenieuw/cubedbits/resources"
@@ -16,6 +18,10 @@ import (
 const (
 	gameWidth  = 720
 	gameHeight = 600
+)
+
+var (
+	Assets map[string]interface{}
 )
 
 type Game struct {
@@ -34,6 +40,9 @@ var (
 )
 
 func (g *Game) Draw(screen *ebiten.Image) {
+
+
+
 	//	op := &ebiten.DrawImageOptions{}
 
 	//	screen.DrawImage(gopherImage, op)
@@ -51,22 +60,39 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 
 func main() {
 
-	sse := loader.LoadSpriteSheets("../../assets/metadata/spritesheets/spritesheets.toml")
-	ss := loader.LoadSpriteSheets("assets/metadata/spritesheets/spritesheets.toml")
+	ga.Assets = map[string]func(string)[]byte{
+        "cubedBits": ga.GetAsset,
+        "ticktacktoe": assets.GetAsset,
+    }
+
+	w := ecs.NewWorld()
+	r := resources.InitResources()
+	ecs.AddResource(w, r)
+
+
+
+	dataGameEngine := string(ga.Spritesheets[:])
+	dataGame := string(assets.Spritesheets[:])
+
+	// sse := loader.LoadSpriteSheets("../../assets/metadata/spritesheets/spritesheets.toml")
+//	ss := loader.LoadSpriteSheets("assets/metadata/spritesheets/spritesheets.toml")
+
+	sse := loader.LoadSpriteSheetsFromString(dataGameEngine)
+	ss := loader.LoadSpriteSheetsFromString(dataGame)
+
+
 
 	maps.Copy(sse, ss)
 
-	r := resources.InitResources()
 	r.ScreenDimensions = &resources.ScreenDimensions{Width: 640, Height: 480, Title: "TickTackToe"}
 	r.SpriteSheets = &sse
 
 	//	r := resources.ScreenDimensions{Width: 640, Height: 480, Title: "TickTackToe"}
 
-	w := ecs.NewWorld()
-	ecs.AddResource(w, r)
+
 
 	// Load fonts
-	fonts := loader.LoadFonts("../../assets/metadata/fonts/fonts.toml")
+	fonts := loader.LoadFonts("cubedBits/fonts.toml")
 	ecs.AddResource(w, &fonts)
 
 	ebiten.SetWindowSize(640, 480)

@@ -17,3 +17,9 @@ func LoadSpriteSheets(spriteSheetMetadataPath string) map[string]c.SpriteSheet {
 	utils.Try(toml.DecodeFile(spriteSheetMetadataPath, &spriteSheetMetadata))
 	return spriteSheetMetadata.SpriteSheets
 }
+
+func LoadSpriteSheetsFromString(spriteSheetMetadataString string) map[string]c.SpriteSheet {
+	var spriteSheetMetadata spriteSheetMetadata
+	utils.Try(toml.Decode(spriteSheetMetadataString, &spriteSheetMetadata))
+	return spriteSheetMetadata.SpriteSheets
+}

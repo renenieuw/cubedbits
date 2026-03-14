@@ -1,7 +1,8 @@
 package resources
 
 import (
-	"os"
+	"strings"
+	"github.com/renenieuw/cubedbits/assets"
 
 	"github.com/golang/freetype/truetype"
 	"github.com/renenieuw/cubedbits/utils"
@@ -14,7 +15,11 @@ type Font struct {
 
 // UnmarshalTOML fills structure fields from TOML data
 func (f *Font) UnmarshalTOML(i interface{}) error {
-	fontFile := utils.Try(os.ReadFile(i.(map[string]interface{})["font"].(string)))
+	path := i.(map[string]interface{})["font"].(string)
+	lib, asset, _ := strings.Cut(path, "/")
+
+	fontFile := assets.GetAssetByLib(lib,string(asset));
+
 	f.Font = utils.Try(truetype.Parse(fontFile))
 	return nil
 }

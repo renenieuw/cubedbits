@@ -5,9 +5,15 @@ import (
 
 	"github.com/renenieuw/cubedbits/math"
 	"github.com/renenieuw/cubedbits/utils"
+	"github.com/renenieuw/cubedbits/assets"
+	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+//	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+
+	"bytes"
+	"image"
+	"strings"
 )
 
 // Sprite structure
@@ -30,7 +36,16 @@ type Texture struct {
 
 // UnmarshalText fills structure fields from text data
 func (t *Texture) UnmarshalText(text []byte) error {
-	textureImage, _ := utils.Try2(ebitenutil.NewImageFromFile(string(text)))
+
+	lib, asset, _ := strings.Cut(string(text), "/")
+
+	img, _, err := image.Decode(bytes.NewReader(assets.GetAssetByLib(lib,string(asset)) ))
+	if err != nil {
+		log.Fatal(err)
+	}
+	textureImage := ebiten.NewImageFromImage(img)
+
+//	textureImage, _ := utils.Try2(ebitenutil.NewImageFromFile(string(text)))
 	t.Image = textureImage
 	return nil
 }

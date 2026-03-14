@@ -1,5 +1,5 @@
 [font.joystix]
-font = "../../assets/fonts/joystix.ttf"
+font = "cubedBits/joystix.ttf"
 
 [font.hack]
-font = "../../assets/fonts/hack.ttf"
+font = "cubedBits/hack.ttf"
