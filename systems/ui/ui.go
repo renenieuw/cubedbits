@@ -3,6 +3,7 @@ package uisystem
 import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/labstack/gommon/log"
 	ecs "github.com/mlange-42/ark/ecs"
 	c "github.com/renenieuw/cubedbits/components"
 	"github.com/renenieuw/cubedbits/resources"
@@ -32,8 +33,20 @@ func UISystem(world *ecs.World) {
 
 		x, y := ebiten.CursorPosition()
 
+		var tochJustPressed bool = false
+		var touchIDs []ebiten.TouchID
+
+		touchIDs = inpututil.AppendJustPressedTouchIDs(touchIDs[:0])
+		if len(touchIDs) != 0 {
+			tochJustPressed = true
+			x,y = ebiten.TouchPosition(touchIDs[0])
+			//x,y = inpututil.touch (touchIDs[0])
+			log.Printf("just toched:%s %d %d %d", tochJustPressed, x, y, len(touchIDs))
+		}
+
+
 		mouseReactive.Hovered = minX <= float64(x) && float64(x) <= maxX && minY <= float64(y) && float64(y) <= maxY
-		mouseReactive.JustClicked = mouseReactive.Hovered && inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft)
+		mouseReactive.JustClicked = mouseReactive.Hovered && (inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) || tochJustPressed)
 
 	}
 

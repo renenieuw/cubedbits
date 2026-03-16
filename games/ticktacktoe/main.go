@@ -13,6 +13,7 @@ import (
 	"github.com/renenieuw/cubedbits/loader"
 	"github.com/renenieuw/cubedbits/resources"
 	st "github.com/renenieuw/cubedbits/states"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 const (
@@ -40,8 +41,12 @@ var (
 )
 
 func (g *Game) Draw(screen *ebiten.Image) {
+	var touchIDs []ebiten.TouchID
 
-
+	touchIDs = inpututil.AppendJustPressedTouchIDs(touchIDs[:0])
+	if len(touchIDs) != 0 {
+		log.Printf("touchIds: %v", touchIDs)
+    }
 
 	//	op := &ebiten.DrawImageOptions{}
 

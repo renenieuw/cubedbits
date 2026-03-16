@@ -37,6 +37,8 @@ func updateMenu(menu menu, world *ecs.World) states.Transition {
 
 	filter := ecs.NewFilter3[gc.SpriteRender, gc.Transform, gc.MouseReactive](world)
 
+
+
 	// Handle mouse events only if mouse is moved or clicked
 	x, y := ebiten.CursorPosition()
 	if x != menuLastCursorPosition.X || y != menuLastCursorPosition.Y || inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
@@ -45,9 +47,10 @@ func updateMenu(menu menu, world *ecs.World) states.Transition {
 			query := filter.Query()
 			for query.Next() {
 				_, _, mouseReactive := query.Get()
-				if mouseReactive.ID == id && mouseReactive.Hovered {
+
+				if mouseReactive.ID == id && mouseReactive.Hovered  {
 					menu.setSelection(iElem)
-					if mouseReactive.JustClicked {
+					if (mouseReactive.JustClicked) {
 						transition = menu.confirmSelection()
 					}
 				}
