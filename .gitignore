@@ -14,3 +14,5 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 games/ticktacktoe/tick.wasm
+games/ticktacktoe/bin/ticktacktoe.wasm
+games/ticktacktoe/publish/ticktacktoe.wasm
