@@ -5,7 +5,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/mlange-42/ark/ecs"
 	gc "github.com/renenieuw/cubedbits/components"
-	"github.com/renenieuw/cubedbits/games/ticktacktoe/math"
+	"github.com/renenieuw/cubedbits/games/tictactoe/math"
 	m "github.com/renenieuw/cubedbits/math"
 	"github.com/renenieuw/cubedbits/states"
 )

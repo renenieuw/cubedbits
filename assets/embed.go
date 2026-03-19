@@ -11,6 +11,11 @@ var (
 )
 
 var (
+	//go:embed metadata/spritesheets/cubedbits.json
+	CubedBitsSpritesheets []byte
+)
+
+var (
 	//go:embed metadata/fonts/fonts.toml
 	Fonts []byte
 )
@@ -18,6 +23,11 @@ var (
 var (
 	//go:embed textures/background.png
 	Background []byte
+)
+
+var (
+	//go:embed textures/cubedbits.png
+	CubedBits []byte
 )
 
 var (
@@ -46,7 +56,9 @@ func GetAssetByLib(lib string, name string) []byte {
 func GetAsset(name string) []byte {
 	switch name {
 	case "Background":
-			return Background
+		return Background
+	case "CubedBits":
+			return CubedBits
 	case "hack.ttf":
 		return Hack
 	case "joystix.ttf":

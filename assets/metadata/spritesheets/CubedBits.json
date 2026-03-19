@@ -1,6 +1,6 @@
 {"frames": {
 
-"background.png":
+"cubedBits/background.png":
 {
 	"frame": {"x":1,"y":259,"w":64,"h":48},
 	"rotated": false,
@@ -8,7 +8,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":48},
 	"sourceSize": {"w":64,"h":48}
 },
-"CubedBitsLogoSmall.png":
+"cubedBits/CubedBitsLogoSmall.png":
 {
 	"frame": {"x":1,"y":1,"w":256,"h":256},
 	"rotated": false,

@@ -1,9 +1,9 @@
 [sprite_sheet.background]
-texture_image = "ticktacktoe/background.png"
+texture_image = "tictactoe/background.png"
 sprites = [{ x = 0, y = 0, width = 640, height = 480 }]
 
 [sprite_sheet.Tiles]
-texture_image = "ticktacktoe/Tiles.png"
+texture_image = "tictactoe/Tiles.png"
 sprites = [
     { x = 0, y = 0, width = 128, height = 128 },
     { x = 128, y = 0, width = 128, height = 128 },
@@ -11,7 +11,7 @@ sprites = [
 ]
 
 [sprite_sheet.game]
-texture_image = "ticktacktoe/game.png"
+texture_image = "tictactoe/game.png"
 sprites = [
     # Blocks
     { x = 0,   y = 0,  width = 64,  height = 32 }, # Sprite 0

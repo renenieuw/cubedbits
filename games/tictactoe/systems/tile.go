@@ -6,7 +6,7 @@ import (
 
 	"github.com/mlange-42/ark/ecs"
 	c "github.com/renenieuw/cubedbits/components"
-	tc "github.com/renenieuw/cubedbits/games/ticktacktoe/components"
+	tc "github.com/renenieuw/cubedbits/games/tictactoe/components"
 )
 
 type TileSystem struct {

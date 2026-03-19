@@ -8,8 +8,8 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/mlange-42/ark/ecs"
 	ga "github.com/renenieuw/cubedbits/assets"
-	"github.com/renenieuw/cubedbits/games/ticktacktoe/assets"
-	ts "github.com/renenieuw/cubedbits/games/ticktacktoe/states"
+	"github.com/renenieuw/cubedbits/games/tictactoe/assets"
+	ts "github.com/renenieuw/cubedbits/games/tictactoe/states"
 	"github.com/renenieuw/cubedbits/loader"
 	"github.com/renenieuw/cubedbits/resources"
 	st "github.com/renenieuw/cubedbits/states"
@@ -67,7 +67,7 @@ func main() {
 
 	ga.Assets = map[string]func(string)[]byte{
         "cubedBits": ga.GetAsset,
-        "ticktacktoe": assets.GetAsset,
+        "tictactoe": assets.GetAsset,
     }
 
 	w := ecs.NewWorld()
@@ -89,10 +89,9 @@ func main() {
 
 	maps.Copy(sse, ss)
 
-	r.ScreenDimensions = &resources.ScreenDimensions{Width: 640, Height: 480, Title: "TickTackToe"}
+	r.ScreenDimensions = &resources.ScreenDimensions{Width: 640, Height: 480, Title: "TicTacToe"}
 	r.SpriteSheets = &sse
 
-	//	r := resources.ScreenDimensions{Width: 640, Height: 480, Title: "TickTackToe"}
 
 
 
