@@ -34,7 +34,7 @@
         <key>dataFormat</key>
         <string>json</string>
         <key>textureFileName</key>
-        <filename>../textures/ticktactoe.png</filename>
+        <filename>../textures/tictactoe.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrQualityLevel</key>
@@ -136,7 +136,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../metadata/tictactoe.json</filename>
+                <filename>../metadata/spritesheets/tictactoe.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
