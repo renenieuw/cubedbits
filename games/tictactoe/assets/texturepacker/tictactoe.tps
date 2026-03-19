@@ -26,13 +26,13 @@
             </struct>
         </array>
         <key>allowRotation</key>
-        <false/>
+        <true/>
         <key>shapeDebug</key>
         <false/>
         <key>dpi</key>
         <uint>72</uint>
         <key>dataFormat</key>
-        <string>phaser-json-hash</string>
+        <string>json</string>
         <key>textureFileName</key>
         <filename>../textures/ticktactoe.png</filename>
         <key>flipPVR</key>
@@ -136,7 +136,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../metadata/ticktacktoe.json</filename>
+                <filename>../metadata/tictactoe.json</filename>
             </struct>
         </map>
         <key>multiPack</key>

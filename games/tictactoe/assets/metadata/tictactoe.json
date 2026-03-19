@@ -1,0 +1,36 @@
+{"frames": {
+
+"Background.png":
+{
+	"frame": {"x":1,"y":1,"w":640,"h":480},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":640,"h":480},
+	"sourceSize": {"w":640,"h":480}
+},
+"Circle.png":
+{
+	"frame": {"x":1155,"y":1,"w":487,"h":487},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":25,"y":7,"w":487,"h":487},
+	"sourceSize": {"w":529,"h":512}
+},
+"Cross.png":
+{
+	"frame": {"x":643,"y":1,"w":438,"h":510},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":2,"w":438,"h":510},
+	"sourceSize": {"w":529,"h":512}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "ticktactoe.png",
+	"format": "RGBA8888",
+	"size": {"w":1643,"h":489},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:7443f99e1ad6f565fe888a1a3c517fb5:36941b7e8f6bc7e53f88b40c708dac60:25190c561aefcd216ba5e3631de275de$"
+}
+}
