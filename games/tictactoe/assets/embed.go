@@ -5,28 +5,40 @@ import (
 )
 
 
+// var (
+// 	//go:embed metadata/spritesheets/spritesheets.toml
+// 	Spritesheets []byte
+// )
+
+// var (
+// 	//go:embed textures/Background.png
+// 	Background []byte
+// )
+
+// var (
+// 	//go:embed textures/Tiles.png
+// 	Tiles []byte
+// )
+//
+//
+//
 var (
-	//go:embed metadata/spritesheets/spritesheets.toml
-	Spritesheets []byte
+	//go:embed metadata/spritesheets/tictactoe.json
+	TictactoeJson []byte
 )
 
 var (
-	//go:embed textures/Background.png
-	Background []byte
-)
-
-var (
-	//go:embed textures/Tiles.png
-	Tiles []byte
+	//go:embed textures/tictactoe.png
+	TictactoeImg []byte
 )
 
 func GetAsset(name string) []byte {
 	switch name {
-	case "background.png":
-			return Background
-	case "Tiles.png":
-			return Tiles
+	case "tictactoe.png":
+			return TictactoeImg
+	case "tictactoe.json":
+		return TictactoeJson
 	default:
-		return Tiles
+		return nil
 	}
 }

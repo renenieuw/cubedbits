@@ -2,6 +2,7 @@ package spritesystem
 
 import (
 	"image"
+//	"log"
 	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -25,9 +26,12 @@ func RenderSpriteSystem(world *ecs.World, screen *ebiten.Image) {
 // Draw sprite with texture wrapping.
 // Image is tiled when texture coordinates are greater than image size.
 func drawImageWithWrap(screen *ebiten.Image, spriteRender *c.SpriteRender) {
-	sprite := spriteRender.SpriteSheet.Sprites[spriteRender.SpriteNumber]
+	sprite := spriteRender.SpriteSheet.Sprites[spriteRender.SpriteGroup][spriteRender.SpriteNumber]
 	texture := spriteRender.SpriteSheet.Texture
 	textureWidth, textureHeight := texture.Image.Size()
+
+//	log.Printf("drawing sprite %d (%dx%d) %s\n", spriteRender.SpriteNumber, sprite.Width, sprite.Height, sprite.Name)
+
 
 	startX := int(math.Floor(float64(sprite.X) / float64(textureWidth)))
 	startY := int(math.Floor(float64(sprite.Y) / float64(textureHeight)))

@@ -10,27 +10,59 @@
 },
 "Circle.png":
 {
-	"frame": {"x":1155,"y":1,"w":487,"h":487},
+	"frame": {"x":643,"y":105,"w":100,"h":100},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":25,"y":7,"w":487,"h":487},
-	"sourceSize": {"w":529,"h":512}
+	"spriteSourceSize": {"x":4,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":106,"h":102}
 },
 "Cross.png":
 {
-	"frame": {"x":643,"y":1,"w":438,"h":510},
-	"rotated": true,
+	"frame": {"x":643,"y":1,"w":90,"h":102},
+	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":59,"y":2,"w":438,"h":510},
-	"sourceSize": {"w":529,"h":512}
+	"spriteSourceSize": {"x":11,"y":0,"w":90,"h":102},
+	"sourceSize": {"w":106,"h":102}
+},
+"Empty.png":
+{
+	"frame": {"x":735,"y":1,"w":3,"h":3},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":3,"h":3},
+	"sourceSize": {"w":106,"h":102}
+},
+"Tiles/E.png":
+{
+	"frame": {"x":735,"y":1,"w":3,"h":3},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":3,"h":3},
+	"sourceSize": {"w":106,"h":102}
+},
+"Tiles/O.png":
+{
+	"frame": {"x":643,"y":105,"w":100,"h":100},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":106,"h":102}
+},
+"Tiles/X.png":
+{
+	"frame": {"x":643,"y":1,"w":90,"h":102},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":0,"w":90,"h":102},
+	"sourceSize": {"w":106,"h":102}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "tictactoe.png",
 	"format": "RGBA8888",
-	"size": {"w":1643,"h":489},
+	"size": {"w":744,"h":482},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:684562f51837c26c8823339f88f0d2bf:36941b7e8f6bc7e53f88b40c708dac60:24caf06a51aafe145f961430d5f35190$"
+	"smartupdate": "$TexturePacker:SmartUpdate:3e5b9d0acc5d33a1821f62c1c2d22137:f845626e232ebd91b76aee87d2d04f1a:24caf06a51aafe145f961430d5f35190$"
 }
 }

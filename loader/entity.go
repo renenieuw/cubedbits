@@ -7,10 +7,10 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/mlange-42/ark/ecs"
 	w "github.com/mlange-42/ark/ecs"
-	"golang.org/x/image/font"
 	c "github.com/renenieuw/cubedbits/components"
 	"github.com/renenieuw/cubedbits/resources"
 	"github.com/renenieuw/cubedbits/utils"
+	"golang.org/x/image/font"
 
 	"github.com/BurntSushi/toml"
 )
@@ -158,10 +158,11 @@ func ProcessSpriteRenderData(world *w.World, spriteRenderData *SpriteRenderData)
 		A: spriteRenderData.Fill.Color[3],
 	})
 
+
 	return &c.SpriteRender{
 		SpriteSheet: &c.SpriteSheet{
 			Texture: c.Texture{Image: textureImage},
-			Sprites: []c.Sprite{{X: 0, Y: 0, Width: spriteRenderData.Fill.Width, Height: spriteRenderData.Fill.Height}},
+			Sprites: map[string][]c.Sprite{"default": {{X: 0, Y: 0, Width: spriteRenderData.Fill.Width, Height: spriteRenderData.Fill.Height}}},
 		},
 		SpriteNumber: 0,
 	}

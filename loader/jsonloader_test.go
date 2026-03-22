@@ -18,4 +18,6 @@ import (
 // }
 
 func TestLoadSpritesheet(t *testing.T) {
+	var a = LoadSpriteSheetsFromJson(assets.CubedBitsSpritesheets, "cubedBits", "CubedBits" );
+	log.Printf("%d", len(a["CubedBits"].Sprites))
 }

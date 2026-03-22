@@ -1,6 +1,8 @@
 package uisystem
 
 import (
+	"log/slog"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/labstack/gommon/log"
@@ -11,6 +13,9 @@ import (
 
 // UISystem sets mouse reactive components
 func UISystem(world *ecs.World) {
+	logger := slog.Default().With("Context","UI.UISystem")
+	logger.Debug("UISytem Start")
+
 	filter := ecs.NewFilter3[c.SpriteRender, c.Transform, c.MouseReactive](world)
 	query := filter.Query()
 	for query.Next() {
@@ -21,8 +26,14 @@ func UISystem(world *ecs.World) {
 		screenWidth := float64(resources.ScreenDimensions.Width)
 		screenHeight := float64(resources.ScreenDimensions.Height)
 
-		spriteWidth := float64(sprite.SpriteSheet.Sprites[sprite.SpriteNumber].Width)
-		spriteHeight := float64(sprite.SpriteSheet.Sprites[sprite.SpriteNumber].Height)
+		if(sprite.SpriteSheet.Sprites[sprite.SpriteGroup] == nil) {
+			logger.Debug("sprite.SpriteGroup not found", "SpriteGroup",sprite.SpriteGroup, "SpriteNumber",sprite.SpriteNumber)
+		} else if (len(sprite.SpriteSheet.Sprites[sprite.SpriteGroup]) < (sprite.SpriteNumber + 1)) {
+			logger.Debug("sprite not found", "SpriteGroup",sprite.SpriteGroup, "SpriteNumber",sprite.SpriteNumber)
+		}
+
+		spriteWidth := float64(sprite.SpriteSheet.Sprites[sprite.SpriteGroup][sprite.SpriteNumber].Width)
+		spriteHeight := float64(sprite.SpriteSheet.Sprites[sprite.SpriteGroup][sprite.SpriteNumber].Height)
 
 		offsetX, offsetY := transform.ComputeOriginOffset(screenWidth, screenHeight)
 

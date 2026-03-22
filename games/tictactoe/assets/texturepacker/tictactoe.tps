@@ -157,7 +157,7 @@
         <key>trimSpriteNames</key>
         <false/>
         <key>prependSmartFolderName</key>
-        <false/>
+        <true/>
         <key>autodetectAnimations</key>
         <true/>
         <key>globalSpriteSettings</key>
@@ -202,11 +202,15 @@
             </struct>
             <key type="filename">Circle.png</key>
             <key type="filename">Cross.png</key>
+            <key type="filename">Empty.png</key>
+            <key type="filename">Tiles/E.png</key>
+            <key type="filename">Tiles/O.png</key>
+            <key type="filename">Tiles/X.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>spriteScale</key>
-                <double>1</double>
+                <double>0.2</double>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
@@ -222,6 +226,8 @@
             <filename>Background.png</filename>
             <filename>Circle.png</filename>
             <filename>Cross.png</filename>
+            <filename>Empty.png</filename>
+            <filename>Tiles</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

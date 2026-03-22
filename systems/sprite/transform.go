@@ -1,6 +1,8 @@
 package spritesystem
 
 import (
+	"log/slog"
+
 	ecs "github.com/mlange-42/ark/ecs"
 	c "github.com/renenieuw/cubedbits/components"
 	"github.com/renenieuw/cubedbits/resources"
@@ -10,17 +12,22 @@ import (
 // Geometry matrix is first recentered, then scaled and rotated, and finally translated.
 func TransformSystem(world *ecs.World) {
 
+	logger := slog.Default().With("Context","Sprite.TransformSystem")
+	logger.Debug("TransformSystem Start")
+
 	filter := ecs.NewFilter2[c.SpriteRender, c.Transform](world)
 	query := filter.Query()
 	for query.Next() {
 		sprite, transform := query.Get()
 
-		// world.Manager.Join(world.Components.Engine.SpriteRender, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
-		// 	sprite := world.Components.Engine.SpriteRender.Get(entity).(*c.SpriteRender)
-		// 	transform := world.Components.Engine.Transform.Get(entity).(*c.Transform)
+		if(sprite.SpriteSheet.Sprites[sprite.SpriteGroup] == nil) {
+			logger.Debug("sprite.SpriteGroup not found", "SpriteGroup",sprite.SpriteGroup, "SpriteNumber",sprite.SpriteNumber)
+		} else if (len(sprite.SpriteSheet.Sprites[sprite.SpriteGroup]) < (sprite.SpriteNumber + 1)) {
+			logger.Debug("sprite not found", "SpriteGroup",sprite.SpriteGroup, "SpriteNumber",sprite.SpriteNumber)
+		}
 
-		spriteWidth := float64(sprite.SpriteSheet.Sprites[sprite.SpriteNumber].Width)
-		spriteHeight := float64(sprite.SpriteSheet.Sprites[sprite.SpriteNumber].Height)
+		spriteWidth := float64(sprite.SpriteSheet.Sprites[sprite.SpriteGroup][sprite.SpriteNumber].Width)
+		spriteHeight := float64(sprite.SpriteSheet.Sprites[sprite.SpriteGroup][sprite.SpriteNumber].Height)
 
 		// Reset geometry matrix
 		sprite.Options.GeoM.Reset()

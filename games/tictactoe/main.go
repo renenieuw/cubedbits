@@ -2,10 +2,12 @@ package main
 
 import (
 	"image/color"
-	"log"
+	"log/slog"
 	"maps"
+	"os"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/mlange-42/ark/ecs"
 	ga "github.com/renenieuw/cubedbits/assets"
 	"github.com/renenieuw/cubedbits/games/tictactoe/assets"
@@ -13,7 +15,7 @@ import (
 	"github.com/renenieuw/cubedbits/loader"
 	"github.com/renenieuw/cubedbits/resources"
 	st "github.com/renenieuw/cubedbits/states"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
+
 )
 
 const (
@@ -45,7 +47,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	touchIDs = inpututil.AppendJustPressedTouchIDs(touchIDs[:0])
 	if len(touchIDs) != 0 {
-		log.Printf("touchIds: %v", touchIDs)
+		slog.Debug("touchIds: ", "touchIDs", touchIDs)
     }
 
 	//	op := &ebiten.DrawImageOptions{}
@@ -64,26 +66,44 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 }
 
 func main() {
+	logFile, err := os.OpenFile("c:/temp/logs/app.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		panic(err)
+	}
+	defer logFile.Close()
+
+	handlerOpts := &slog.HandlerOptions{
+		Level: slog.LevelDebug,
+		AddSource: true,
+	}
+
+	mainlogger := slog.New(slog.NewJSONHandler(logFile,handlerOpts))
+	slog.SetDefault(mainlogger)
+	logger := slog.Default().With("Context","Main")
+
+	logger.Debug("Initializing assets")
 
 	ga.Assets = map[string]func(string)[]byte{
         "cubedBits": ga.GetAsset,
         "tictactoe": assets.GetAsset,
     }
 
+	logger.Debug("Initializing world")
+
+
+	logger.Debug("Making new world")
 	w := ecs.NewWorld()
+	logger.Debug("Initializing resources")
 	r := resources.InitResources()
 	ecs.AddResource(w, r)
 
 
 
 	dataGameEngine := string(ga.Spritesheets[:])
-	dataGame := string(assets.Spritesheets[:])
-
-	// sse := loader.LoadSpriteSheets("../../assets/metadata/spritesheets/spritesheets.toml")
-//	ss := loader.LoadSpriteSheets("assets/metadata/spritesheets/spritesheets.toml")
+	dataGame := assets.TictactoeJson[:]
 
 	sse := loader.LoadSpriteSheetsFromString(dataGameEngine)
-	ss := loader.LoadSpriteSheetsFromString(dataGame)
+	ss := loader.LoadSpriteSheetsFromJson(dataGame, "tictactoe", "tictactoe.png")
 
 
 
@@ -92,6 +112,9 @@ func main() {
 	r.ScreenDimensions = &resources.ScreenDimensions{Width: 640, Height: 480, Title: "TicTacToe"}
 	r.SpriteSheets = &sse
 
+	// for name, _ := range sse {
+	// 	log.Printf("Spritesheets: %s", name)
+	// }
 
 
 
@@ -102,6 +125,6 @@ func main() {
 	ebiten.SetWindowSize(640, 480)
 	ebiten.SetWindowTitle("Starss")
 	if err := ebiten.RunGame(&Game{w, st.Init(&ts.GameplayState{}, w)}); err != nil {
-		log.Fatal(err)
+		slog.Error("error", "err", err)
 	}
 }

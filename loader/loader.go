@@ -1,6 +1,8 @@
 package loader
 
 import (
+	"log/slog"
+
 	c "github.com/renenieuw/cubedbits/components"
 	"github.com/renenieuw/cubedbits/utils"
 
@@ -19,6 +21,8 @@ func LoadSpriteSheets(spriteSheetMetadataPath string) map[string]c.SpriteSheet {
 }
 
 func LoadSpriteSheetsFromString(spriteSheetMetadataString string) map[string]c.SpriteSheet {
+	logger := slog.Default().With("Context","Loader")
+	logger.Debug("LoadSpriteSheetsFromString", "file", spriteSheetMetadataString)
 	var spriteSheetMetadata spriteSheetMetadata
 	utils.Try(toml.Decode(spriteSheetMetadataString, &spriteSheetMetadata))
 	return spriteSheetMetadata.SpriteSheets

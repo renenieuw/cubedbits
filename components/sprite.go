@@ -26,6 +26,10 @@ type Sprite struct {
 	Width int
 	// Height of the sprite
 	Height int
+
+	Name string
+
+	SpriteGroup string
 }
 
 // Texture structure
@@ -55,7 +59,10 @@ type SpriteSheet struct {
 	// Texture image
 	Texture Texture `toml:"texture_image"`
 	// List of sprites
-	Sprites []Sprite
+	Spritesold []Sprite
+
+	Sprites map[string][]Sprite
+
 	// List of animations
 	Animations map[string]*Animation
 }
@@ -66,6 +73,7 @@ type SpriteRender struct {
 	SpriteSheet *SpriteSheet
 	// Index of the sprite on the sprite sheet
 	SpriteNumber int
+	SpriteGroup string
 	// Draw options
 	Options ebiten.DrawImageOptions
 }

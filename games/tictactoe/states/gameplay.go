@@ -52,19 +52,34 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 	resources := ecs.GetResource[resources.Resources](world)
 	spriteSheets := resources.SpriteSheets
 
-	spriteSheetBigBackground, ok := (*spriteSheets)["background"]
+	spriteSheetBigBackground, ok := (*spriteSheets)["tictactoe"]
 	if !ok {
 		log.Error("SpriteSheet 'game' not found")
 		return
 	}
 
+	backgroundIndex := 0
+	for groupname, sprites := range spriteSheetBigBackground.Sprites {
+		// if sprite.Name == "Background.png" {
+		log.Printf("Spritegroup %s has length %d", groupname, len(sprites))
+
+		for i, sprite := range sprites {
+			log.Printf("Sprite %d has has name %s", i, sprite.Name)
+		}
+
+
+		// 	backgroundIndex = i
+		// 	break
+		// }
+	}
+
 	mapper2 := ecs.NewMap2[gc.SpriteRender, gc.Transform](world)
-	//mapper3 := ecs.NewMap3[gc.SpriteRender, gc.Transform, gc.MouseReactive](world)
 
 	mapper2.NewEntity(
 		&gc.SpriteRender{
 			SpriteSheet:  &spriteSheetBigBackground,
-			SpriteNumber: 0,
+			SpriteNumber: backgroundIndex,
+			SpriteGroup: "Background.png",
 			Options:      ebiten.DrawImageOptions{},
 		},
 		&gc.Transform{Translation: math.Vector2{X: 0, Y: 0}, Origin: "Middle"},
@@ -94,10 +109,10 @@ func InitTiles(world *ecs.World) {
 	resources := ecs.GetResource[resources.Resources](world)
 	spriteSheets := resources.SpriteSheets
 
-	spriteSheetTiles, ok := (*spriteSheets)["Tiles"]
+	spriteSheetTiles, ok := (*spriteSheets)["tictactoe"]
 
 	if !ok {
-		log.Error("SpriteSheet 'Tiles' not found")
+		log.Error("SpriteSheet 'tictactoe' not found")
 	}
 
 	for i := 0; i < 3; i++ {
@@ -106,7 +121,7 @@ func InitTiles(world *ecs.World) {
 			mapper := ecs.NewMap4[gc.SpriteRender, gc.Transform, gc.MouseReactive, tc.Tile](world)
 
 			mapper.NewEntity(
-				&gc.SpriteRender{SpriteSheet: &spriteSheetTiles, SpriteNumber: 0, Options: ebiten.DrawImageOptions{}},
+				&gc.SpriteRender{SpriteSheet: &spriteSheetTiles, SpriteNumber: 0, SpriteGroup: "Tiles", Options: ebiten.DrawImageOptions{}},
 				&gc.Transform{Translation: math.Vector2{X: float64(j*140) + 180, Y: float64(i*140) + 100}},
 				&gc.MouseReactive{ID: fmt.Sprint("test", "", j, " - ", i)},
 				&tc.Tile{X: j, Y: i, State: 0},
