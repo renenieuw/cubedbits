@@ -82,7 +82,7 @@ func main() {
 	slog.SetDefault(mainlogger)
 	logger := slog.Default().With("Context","Main")
 
-	logger.Debug("Initializing assets")
+	logger.Debug("Initializing assets.")
 
 	ga.Assets = map[string]func(string)[]byte{
         "cubedBits": ga.GetAsset,
