@@ -26,7 +26,7 @@
             </struct>
         </array>
         <key>allowRotation</key>
-        <true/>
+        <false/>
         <key>shapeDebug</key>
         <false/>
         <key>dpi</key>
@@ -146,7 +146,7 @@
         <key>outputFormat</key>
         <enum type="SettingsBase::OutputFormat">RGBA8888</enum>
         <key>alphaHandling</key>
-        <enum type="SettingsBase::AlphaHandling">ClearTransparentPixels</enum>
+        <enum type="SettingsBase::AlphaHandling">KeepTransparentPixels</enum>
         <key>contentProtection</key>
         <struct type="ContentProtection">
             <key>key</key>
@@ -173,7 +173,7 @@
             <key>trimMargin</key>
             <uint>1</uint>
             <key>trimMode</key>
-            <enum type="SpriteSettings::TrimMode">Trim</enum>
+            <enum type="SpriteSettings::TrimMode">None</enum>
             <key>tracerTolerance</key>
             <int>200</int>
             <key>heuristicMask</key>
