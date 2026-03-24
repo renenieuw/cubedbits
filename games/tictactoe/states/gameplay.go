@@ -2,6 +2,7 @@ package states
 
 import (
 	"fmt"
+	"log/slog"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -43,7 +44,8 @@ func (st *GameplayState) OnResume(world *ecs.World) {
 
 // OnStart method
 func (st *GameplayState) OnStart(world *ecs.World) {
-	log.Info("Gameplay.Start")
+	logger := slog.Default().With("Context","InitGameplay")
+	logger.Debug("Gameplay.Start")
 
 	st.TileSystem = ts.TileSystem{}
 
@@ -54,17 +56,17 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 
 	spriteSheetBigBackground, ok := (*spriteSheets)["tictactoe"]
 	if !ok {
-		log.Error("SpriteSheet 'game' not found")
+		logger.Error("SpriteSheet 'game' not found")
 		return
 	}
 
 	backgroundIndex := 0
 	for groupname, sprites := range spriteSheetBigBackground.Sprites {
 		// if sprite.Name == "Background.png" {
-		log.Printf("Spritegroup %s has length %d", groupname, len(sprites))
+		logger.Debug(fmt.Sprintf("Spritegroup %s has length %d", groupname, len(sprites)))
 
 		for i, sprite := range sprites {
-			log.Printf("Sprite %d has has name %s", i, sprite.Name)
+			logger.Debug(fmt.Sprintf("Sprite %d has has name %s", i, sprite.Name))
 		}
 
 

@@ -19,6 +19,8 @@ type TileSystem struct {
 }
 
 func (ts *TileSystem) Update(world *ecs.World) {
+	//logger := slog.Default().With("Context","UpdateTileSystem")
+
 	filter := ecs.NewFilter4[c.SpriteRender, tc.Tile, c.Transform, c.MouseReactive](world)
 	query := filter.Query()
 	for query.Next() {
@@ -27,7 +29,9 @@ func (ts *TileSystem) Update(world *ecs.World) {
 		transform.Translation.X = float64(180 + (tile.X * 140))
 		transform.Translation.Y = float64((100 + (tile.Y * 140)))
 		transform.Rotation = 0
+
 		if mouseReactive.Hovered && mouseReactive.JustClicked && tile.State == 0 && ts.WonAt.IsZero() {
+
 			tile.State = (ts.Turn % 2) + 1
 			ts.Turn = ts.Turn + 1
 			spriteRender.SpriteNumber = tile.State

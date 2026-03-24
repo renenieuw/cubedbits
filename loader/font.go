@@ -1,8 +1,9 @@
 package loader
 
 import (
-	"log"
+	"log/slog"
 	"strings"
+	"fmt"
 	"github.com/renenieuw/cubedbits/assets"
 
 	"github.com/renenieuw/cubedbits/resources"
@@ -17,10 +18,12 @@ type FontMetadata struct {
 
 // LoadFonts loads fonts from a TOML file
 func LoadFonts(fontPath string) FontMetadata {
+	logger := slog.Default().With("Context", "Fonts")
+
 	lib, asset, _ := strings.Cut(fontPath, "/")
-	log.Printf("loading: %s %s %s" , fontPath, lib, asset)
+	logger.Debug(fmt.Sprintf("loading: %s %s %s" , fontPath, lib, asset))
 	fontFile := assets.GetAssetByLib(lib,string(asset));
-	log.Printf("loading: %d" , len(fontFile))
+	logger.Debug(fmt.Sprintf("loading: %d" , len(fontFile)))
 
 
 

@@ -2,14 +2,14 @@ package components
 
 import (
 	"fmt"
+	"log/slog"
 
+	"github.com/renenieuw/cubedbits/assets"
 	"github.com/renenieuw/cubedbits/math"
 	"github.com/renenieuw/cubedbits/utils"
-	"github.com/renenieuw/cubedbits/assets"
-	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
-//	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	//	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 
 	"bytes"
 	"image"
@@ -41,11 +41,13 @@ type Texture struct {
 // UnmarshalText fills structure fields from text data
 func (t *Texture) UnmarshalText(text []byte) error {
 
+	logger := slog.Default().With("Context","Sprite")
+
 	lib, asset, _ := strings.Cut(string(text), "/")
 
 	img, _, err := image.Decode(bytes.NewReader(assets.GetAssetByLib(lib,string(asset)) ))
 	if err != nil {
-		log.Fatal(err)
+		logger.Error("Failed to decode image", "error", err)
 	}
 	textureImage := ebiten.NewImageFromImage(img)
 

@@ -73,11 +73,12 @@ func main() {
 	defer logFile.Close()
 
 	handlerOpts := &slog.HandlerOptions{
-		Level: slog.LevelDebug,
+		Level: slog.LevelInfo,
 		AddSource: true,
 	}
 
-	mainlogger := slog.New(slog.NewJSONHandler(logFile,handlerOpts))
+	// mainlogger := slog.New(slog.NewJSONHandler(logFile,handlerOpts))
+	mainlogger := slog.New(slog.NewJSONHandler(os.Stderr,handlerOpts))
 	slog.SetDefault(mainlogger)
 	logger := slog.Default().With("Context","Main")
 

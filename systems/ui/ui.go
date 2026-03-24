@@ -35,6 +35,8 @@ func UISystem(world *ecs.World) {
 		spriteWidth := float64(sprite.SpriteSheet.Sprites[sprite.SpriteGroup][sprite.SpriteNumber].Width)
 		spriteHeight := float64(sprite.SpriteSheet.Sprites[sprite.SpriteGroup][sprite.SpriteNumber].Height)
 
+		spr := sprite.SpriteSheet.Sprites[sprite.SpriteGroup][sprite.SpriteNumber]
+
 		offsetX, offsetY := transform.ComputeOriginOffset(screenWidth, screenHeight)
 
 		minX := (offsetX + transform.Translation.X) - spriteWidth/2
@@ -57,6 +59,11 @@ func UISystem(world *ecs.World) {
 
 
 		mouseReactive.Hovered = minX <= float64(x) && float64(x) <= maxX && minY <= float64(y) && float64(y) <= maxY
+		if(mouseReactive.Hovered){
+			logger.Info("Hoveredddd", "height", spriteHeight)
+			logger.Info("Hoveredddd2", "height", spr)
+		}
+
 		mouseReactive.JustClicked = mouseReactive.Hovered && (inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) || tochJustPressed)
 
 	}

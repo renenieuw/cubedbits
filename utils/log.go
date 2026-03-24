@@ -2,27 +2,27 @@ package utils
 
 import (
 	"fmt"
-	"log"
+	"log/slog"
 	"os"
-	"runtime/debug"
-	"strings"
 )
 
 func logFatal(err error, funcName string) {
-	log.Printf("%v\n\n", err)
-	log.Println("Stack trace:")
+	logger := slog.Default().With("Context","Main")
 
-	stackLines := strings.Split(string(debug.Stack()), "\n")
-	for iLine, line := range stackLines {
-		if strings.Contains(line, funcName) {
-			stackLines = stackLines[iLine+2:]
-			break
-		}
-	}
+	logger.Debug("Error", "Error", err)
+	// log.Println("Stack trace:")
 
-	for _, line := range stackLines {
-		log.Println(line)
-	}
+	// stackLines := strings.Split(string(debug.Stack()), "\n")
+	// for iLine, line := range stackLines {
+	// 	if strings.Contains(line, funcName) {
+	// 		stackLines = stackLines[iLine+2:]
+	// 		break
+	// 	}
+	// }
+
+	// for _, line := range stackLines {
+	// 	log.Println(line)
+	// }
 	os.Exit(1)
 }
 

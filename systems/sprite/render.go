@@ -2,7 +2,6 @@ package spritesystem
 
 import (
 	"image"
-//	"log"
 	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"

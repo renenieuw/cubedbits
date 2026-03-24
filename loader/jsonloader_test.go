@@ -1,7 +1,6 @@
 package loader
 
 import (
-	"log"
 	"testing"
 
 	"github.com/renenieuw/cubedbits/assets"

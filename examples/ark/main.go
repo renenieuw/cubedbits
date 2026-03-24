@@ -2,7 +2,6 @@ package main
 
 import (
 	"image/color"
-	"log"
 
 	"math/rand/v2"
 
@@ -63,6 +62,8 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 }
 
 func main() {
+	logger := slog.Default().With("Context","ArkMain")
+
 	col = color.RGBA{0x80, 0x80, 0x80, 0xff}
 
 	world = ecs.NewWorld()
@@ -79,6 +80,6 @@ func main() {
 	ebiten.SetWindowSize(640, 480)
 	ebiten.SetWindowTitle("Starss")
 	if err := ebiten.RunGame(&Game{}); err != nil {
-		log.Fatal(err)
+		logger.Error("Failed to run game", "error", err)
 	}
 }
