@@ -4,7 +4,6 @@ import (
 	"image/color"
 	"log/slog"
 	"maps"
-	"os"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -13,9 +12,9 @@ import (
 	"github.com/renenieuw/cubedbits/games/tictactoe/assets"
 	ts "github.com/renenieuw/cubedbits/games/tictactoe/states"
 	"github.com/renenieuw/cubedbits/loader"
+	"github.com/renenieuw/cubedbits/logging"
 	"github.com/renenieuw/cubedbits/resources"
 	st "github.com/renenieuw/cubedbits/states"
-
 )
 
 const (
@@ -66,19 +65,23 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 }
 
 func main() {
-	logFile, err := os.OpenFile("c:/temp/logs/app.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
-	if err != nil {
-		panic(err)
-	}
-	defer logFile.Close()
+	// logFile, err := os.OpenFile("c:/temp/logs/tictactoe.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// defer logFile.Close()
+
 
 	handlerOpts := &slog.HandlerOptions{
 		Level: slog.LevelInfo,
 		AddSource: true,
 	}
 
-	// mainlogger := slog.New(slog.NewJSONHandler(logFile,handlerOpts))
-	mainlogger := slog.New(slog.NewJSONHandler(os.Stderr,handlerOpts))
+//	mainlogger := slog.New(slog.NewJSONHandler(logFile,handlerOpts))
+//	mainlogger := slog.New(slog.NewJSONHandler(os.Stderr,handlerOpts))
+
+	mainlogger := slog.New(slog.NewJSONHandler(&logging.LogWriter{Path: "c:/temp/logs/tictactoe.log"},handlerOpts))
+
 	slog.SetDefault(mainlogger)
 	logger := slog.Default().With("Context","Main")
 
@@ -112,12 +115,6 @@ func main() {
 
 	r.ScreenDimensions = &resources.ScreenDimensions{Width: 640, Height: 480, Title: "TicTacToe"}
 	r.SpriteSheets = &sse
-
-	// for name, _ := range sse {
-	// 	log.Printf("Spritesheets: %s", name)
-	// }
-
-
 
 	// Load fonts
 	fonts := loader.LoadFonts("cubedBits/fonts.toml")
