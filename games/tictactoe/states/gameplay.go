@@ -3,7 +3,6 @@ package states
 import (
 	"fmt"
 	"log/slog"
-
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/labstack/gommon/log"
@@ -49,8 +48,6 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 
 	st.TileSystem = ts.TileSystem{}
 
-	// var resources = ecs.GetResource[resources.Resources](world)
-	// spriteSheets := resources.SpriteSheetsGame
 	resources := ecs.GetResource[resources.Resources](world)
 	spriteSheets := resources.SpriteSheets
 
@@ -62,17 +59,12 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 
 	backgroundIndex := 0
 	for groupname, sprites := range spriteSheetBigBackground.Sprites {
-		// if sprite.Name == "Background.png" {
 		logger.Debug(fmt.Sprintf("Spritegroup %s has length %d", groupname, len(sprites)))
 
 		for i, sprite := range sprites {
 			logger.Debug(fmt.Sprintf("Sprite %d has has name %s", i, sprite.Name))
 		}
 
-
-		// 	backgroundIndex = i
-		// 	break
-		// }
 	}
 
 	mapper2 := ecs.NewMap2[gc.SpriteRender, gc.Transform](world)

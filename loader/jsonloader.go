@@ -63,6 +63,12 @@ func LoadSpriteSheetsFromJson(data []byte, lib string, imgName string) map[strin
 		logger.Debug("Loaded sprite: ", "lib", lib, "imgName", imgName, "name", filename, "spritegroup", group, "found", found)
 	}
 
+	for _, sprites := range sprites {
+		sort.Slice(sprites, func(i, j int) bool {
+			return sprites[i].Name < sprites[j].Name
+		})
+	}
+
 	var tex c.Texture
 	tex.Image =  textureImage
 
