@@ -1,0 +1,35 @@
+{
+  "json_log": {
+    "title": "JSON log rene",
+    "description": "Generic JSON log rene",
+    "json": true,
+    "file-pattern": ".*\\.json$",
+    "level-field": "levell",
+    "level" : {
+      "critical" : "error",
+      "error" : "warning",
+      "warning" : "alert",
+      "info": "info"
+    },
+
+    "timestamp-field": "timee",
+    "value": {
+      "msgg": {
+        "kind": "string"
+      }
+    },
+    "line-format": [
+      {
+        "field": "timee"
+      },
+      " ",
+      {
+        "field": "levell",
+        "min-width": 6
+      },
+      {
+        "field": "msgg"
+      }
+    ]
+  }
+}

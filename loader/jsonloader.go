@@ -12,22 +12,11 @@ import (
 	"github.com/renenieuw/cubedbits/assets"
 	c "github.com/renenieuw/cubedbits/components"
 	"github.com/renenieuw/cubedbits/libraries/texturepacker"
-	// "github.com/renenieuw/cubedbits/loader"
-	//"github.com/renenieuw/cubedbits/math"
 )
 
-// type spriteSheetMetadata struct {
-// 	SpriteSheets map[string]c.SpriteSheet
-// }
-
-// LoadSpriteSheets loads sprite sheets from a TOML file
-// func LoadSpriteSheetsFromJson(spriteSheetMetadataPath string) map[string]c.SpriteSheet {
-// 	var spriteSheetMetadata spriteSheetMetadata
-// 	utils.Try(toml.DecodeFile(spriteSheetMetadataPath, &spriteSheetMetadata))
-// 	return spriteSheetMetadata.SpriteSheets
-// }
 
 func LoadSpriteSheetsFromJson(data []byte, lib string, imgName string) map[string]c.SpriteSheet {
+
 	logger := slog.Default().With("Context","JsonLoader")
 	logger.Debug("LoadSpriteSheetsFromJsonDebug: ", "lib", lib, "imgName", imgName)
 

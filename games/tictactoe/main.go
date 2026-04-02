@@ -4,6 +4,7 @@ import (
 	"image/color"
 	"log/slog"
 	"maps"
+	"os"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -65,27 +66,35 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 }
 
 func main() {
-	// logFile, err := os.OpenFile("c:/temp/logs/tictactoe.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// defer logFile.Close()
-
+	logFile, err := os.OpenFile("c:/temp/logs/tictactoe.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		panic(err)
+	}
+	defer logFile.Close()
 
 	handlerOpts := &slog.HandlerOptions{
 		Level: slog.LevelInfo,
 		AddSource: true,
 	}
+	contexts := make(map[string]bool)
+	contexts["Main"] = true
+	contexts["Main2"] = true
+	logFilter := logging.LogFilter{ Contexts: contexts }
+	mainlogger := slog.New(logging.NewFilteredJSONHandler(logFile,handlerOpts, &logFilter))
+
+
 
 //	mainlogger := slog.New(slog.NewJSONHandler(logFile,handlerOpts))
 //	mainlogger := slog.New(slog.NewJSONHandler(os.Stderr,handlerOpts))
+//	logging.Flags.Init(slog.LevelDebug)
 
-	mainlogger := slog.New(slog.NewJSONHandler(&logging.LogWriter{Path: "c:/temp/logs/tictactoe.log"},handlerOpts))
+	// mainlogger := slog.New(slog.NewJSONHandler(&logging.LogWriter{Path: "c:/temp/logs/tictactoe.log"},handlerOpts))
+//	mainlogger := slog.New(slog.NewJSONHandler(logFile ,handlerOpts))
 
 	slog.SetDefault(mainlogger)
 	logger := slog.Default().With("Context","Main")
 
-	logger.Debug("Initializing assets.")
+	logger.Info("Initializing assets.")
 
 	ga.Assets = map[string]func(string)[]byte{
         "cubedBits": ga.GetAsset,
