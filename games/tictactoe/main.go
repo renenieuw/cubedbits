@@ -73,28 +73,17 @@ func main() {
 	defer logFile.Close()
 
 	handlerOpts := &slog.HandlerOptions{
-		Level: slog.LevelInfo,
+		Level: slog.LevelDebug,
 		AddSource: true,
 	}
 	contexts := make(map[string]bool)
-	contexts["Main"] = true
-	contexts["Main2"] = true
+	contexts["Loader.*"] = true
 	logFilter := logging.LogFilter{ Contexts: contexts }
 	mainlogger := slog.New(logging.NewFilteredJSONHandler(logFile,handlerOpts, &logFilter))
 
 
-
-//	mainlogger := slog.New(slog.NewJSONHandler(logFile,handlerOpts))
-//	mainlogger := slog.New(slog.NewJSONHandler(os.Stderr,handlerOpts))
-//	logging.Flags.Init(slog.LevelDebug)
-
-	// mainlogger := slog.New(slog.NewJSONHandler(&logging.LogWriter{Path: "c:/temp/logs/tictactoe.log"},handlerOpts))
-//	mainlogger := slog.New(slog.NewJSONHandler(logFile ,handlerOpts))
-
 	slog.SetDefault(mainlogger)
 	logger := slog.Default().With("Context","Main")
-
-	logger.Info("Initializing assets.")
 
 	ga.Assets = map[string]func(string)[]byte{
         "cubedBits": ga.GetAsset,
@@ -110,15 +99,11 @@ func main() {
 	r := resources.InitResources()
 	ecs.AddResource(w, r)
 
-
-
 	dataGameEngine := string(ga.Spritesheets[:])
 	dataGame := assets.TictactoeJson[:]
 
 	sse := loader.LoadSpriteSheetsFromString(dataGameEngine)
 	ss := loader.LoadSpriteSheetsFromJson(dataGame, "tictactoe", "tictactoe.png")
-
-
 
 	maps.Copy(sse, ss)
 

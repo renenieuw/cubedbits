@@ -18,7 +18,7 @@ type FontMetadata struct {
 
 // LoadFonts loads fonts from a TOML file
 func LoadFonts(fontPath string) FontMetadata {
-	logger := slog.Default().With("Context", "Fonts")
+	logger := slog.Default().With("Context", "Loader.Fonts")
 
 	lib, asset, _ := strings.Cut(fontPath, "/")
 	logger.Debug(fmt.Sprintf("loading: %s %s %s" , fontPath, lib, asset))
