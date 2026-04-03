@@ -2,6 +2,7 @@ package spritesystem
 
 import (
 	"image"
+	"log/slog"
 	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -11,6 +12,9 @@ import (
 )
 
 func RenderSpriteSystem(world *ecs.World, screen *ebiten.Image) {
+	logger := slog.Default().With("Context","Engine.Draw.SpriteSystem")
+	logger.Debug("Rendering")
+
 	filter := ecs.NewFilter1[c.SpriteRender](world)
 
 	query := filter.Query()

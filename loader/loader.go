@@ -21,9 +21,12 @@ func LoadSpriteSheets(spriteSheetMetadataPath string) map[string]c.SpriteSheet {
 }
 
 func LoadSpriteSheetsFromString(spriteSheetMetadataString string) map[string]c.SpriteSheet {
-	logger := slog.Default().With("Context","Loader")
+	logger := slog.Default().With("Context","Loader.LoadSpritesheets")
 	logger.Debug("LoadSpriteSheetsFromString", "file", spriteSheetMetadataString)
 	var spriteSheetMetadata spriteSheetMetadata
 	utils.Try(toml.Decode(spriteSheetMetadataString, &spriteSheetMetadata))
+	for key, ss := range spriteSheetMetadata.SpriteSheets {
+		logger.Debug("SpriteSheets", "spritesheet", key, "c", len(ss.Sprites))
+	}
 	return spriteSheetMetadata.SpriteSheets
 }

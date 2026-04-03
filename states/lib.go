@@ -1,6 +1,7 @@
 package states
 
 import (
+	"log/slog"
 	"os"
 
 	//	a "github.com/x-hgg-x/goecsengine/systems/animation"
@@ -55,16 +56,22 @@ type State interface {
 type StateMachine struct {
 	states         []State
 	lastTransition Transition
+	frame int
 }
 
 // Init creates a new state machine with an initial state
 func Init(s State, world *w.World) StateMachine {
 	s.OnStart(world)
-	return StateMachine{[]State{s}, Transition{TransNone, []State{}}}
+	return StateMachine{[]State{s}, Transition{TransNone, []State{}}, 0}
 }
 
 // Update updates the state machine
 func (sm *StateMachine) Update(world *w.World) {
+	sm.frame++;
+	logger := slog.Default().With("Context","Engine.Update")
+
+	logger.Debug("Updating", "Frame", sm.frame)
+
 	switch sm.lastTransition.Type {
 	case TransPop:
 		sm._Pop(world)
@@ -99,6 +106,9 @@ func (sm *StateMachine) Update(world *w.World) {
 
 // Draw draws the screen after a state update
 func (sm *StateMachine) Draw(world *w.World, screen *ebiten.Image) {
+	logger := slog.Default().With("Context","Engine.Draw")
+	logger.Debug("Drawing", "Frame", sm.frame)
+
 	// Run drawing systems
 	s.RenderSpriteSystem(world, screen)
 	u.RenderUISystem(world, screen)

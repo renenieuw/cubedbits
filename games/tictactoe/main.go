@@ -50,14 +50,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		slog.Debug("touchIds: ", "touchIDs", touchIDs)
     }
 
-	//	op := &ebiten.DrawImageOptions{}
-
-	//	screen.DrawImage(gopherImage, op)
 	g.stateMachine.Draw(g.world, screen)
-
-	// slog.Info(fmt.Sprintf("%s%d", "Drawing game", gopherImage.Bounds().Max.X))
-	// ebitenutil.DrawRect(screen, 11, 12, settings.Scale, settings.Scale, particleData.Color)
-	//
 
 }
 
@@ -77,7 +70,7 @@ func main() {
 		AddSource: true,
 	}
 	contexts := make(map[string]bool)
-	contexts["Loader.*"] = true
+	contexts["Main"] = true
 	logFilter := logging.LogFilter{ Contexts: contexts }
 	mainlogger := slog.New(logging.NewFilteredJSONHandler(logFile,handlerOpts, &logFilter))
 
@@ -106,6 +99,9 @@ func main() {
 	ss := loader.LoadSpriteSheetsFromJson(dataGame, "tictactoe", "tictactoe.png")
 
 	maps.Copy(sse, ss)
+
+	logger.Debug("Loaded spritesheets", "Object", sse)
+
 
 	r.ScreenDimensions = &resources.ScreenDimensions{Width: 640, Height: 480, Title: "TicTacToe"}
 	r.SpriteSheets = &sse

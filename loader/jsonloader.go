@@ -16,9 +16,8 @@ import (
 
 
 func LoadSpriteSheetsFromJson(data []byte, lib string, imgName string) map[string]c.SpriteSheet {
-
-	logger := slog.Default().With("Context","JsonLoader")
-	logger.Debug("LoadSpriteSheetsFromJsonDebug: ", "lib", lib, "imgName", imgName)
+	logger := slog.Default().With("Context","Loader.LoadSpritesheets")
+	logger.Debug("LoadSpriteSheetsFromJson: ", "lib", lib, "imgName", imgName)
 
 	sheet, err := texturepacker.SheetFromData(data, texturepacker.FormatJSONHash{})
 	if err != nil {

@@ -1,35 +1,74 @@
 {
-  "json_log": {
-    "title": "JSON log rene",
-    "description": "Generic JSON log rene",
-    "json": true,
-    "file-pattern": ".*\\.json$",
-    "level-field": "levell",
-    "level" : {
-      "critical" : "error",
-      "error" : "warning",
-      "warning" : "alert",
-      "info": "info"
-    },
+    "$schema": "https://lnav.org/schemas/format-v1.schema.json",
+    "json_log_rene": {
+        "json": true,
+        "title": "Rene Log",
+        "description": "Rene log",
+        "convert-to-local-time": true,
+        "line-format": [
+            {
+                "field": "level",
+				"min-width": 6
+            },
+            {
+                "field": "time",
+				"timestamp-format": "%H:%M:%S.%L"
+            },
+            " ",
+            {
+                "field": "msg",
+				"min-width": 60
+            },
+            " ",
+            {
+                "field": "Context",
+                "auto-width": true,
+                "align": "left"
+            },
+            " ",
+            {
+                "field": "source/function"
+            },
 
-    "timestamp-field": "timee",
-    "value": {
-      "msgg": {
-        "kind": "string"
-      }
-    },
-    "line-format": [
-      {
-        "field": "timee"
-      },
-      " ",
-      {
-        "field": "levell",
-        "min-width": 6
-      },
-      {
-        "field": "msgg"
-      }
-    ]
-  }
+            " -- ",
+            {
+                "field": "source/file"
+            },
+
+            {
+                "field": "length",
+                "auto-width": true,
+                "align": "right"
+            }
+        ],
+        "level": {
+            "info": "INFO",
+            "warning": "WARNING",
+            "error": "ERROR",
+            "debug": "DEBUG",
+            "fatal": "FATAL"
+        },
+        "timestamp-field": "time",
+        "level-pointer": "/_ws_expert__ws_expert_severity$",
+        "body-field": "info",
+        "hide-extra": true,
+        "value": {
+            "source/function": {
+                "kind": "json"
+            },
+             "source/file": {
+                "kind": "json",
+				"hidden": true
+            },
+			"Context": {
+                "kind": "string"
+            },
+			"msg": {
+                "kind": "string"
+            },
+            "length": {
+                "kind": "integer"
+            }
+        }
+    }
 }

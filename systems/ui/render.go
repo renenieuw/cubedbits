@@ -1,6 +1,8 @@
 package uisystem
 
 import (
+	"log/slog"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text"
 	ecs "github.com/mlange-42/ark/ecs"
@@ -11,6 +13,9 @@ import (
 
 // RenderUISystem draws text entities
 func RenderUISystem(world *ecs.World, screen *ebiten.Image) {
+	logger := slog.Default().With("Context","Engine.Draw.UISystem")
+	logger.Debug("Rendering")
+
 	resources := ecs.GetResource[resources.Resources](world)
 	filter := ecs.NewFilter2[c.Text, c.UITransform](world)
 	query := filter.Query()
