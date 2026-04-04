@@ -2,6 +2,10 @@ package assets
 
 import (
 	_ "embed"
+	"fmt"
+	"log/slog"
+	"maps"
+	"slices"
 )
 
 
@@ -49,6 +53,11 @@ type Menu interface {
 }
 
 func GetAssetByLib(lib string, name string) []byte {
+	if(Assets[lib] == nil) {
+		logger := slog.Default().With("Context","Loader.GetAssetByLib")
+		logger.Warn(fmt.Sprintf("Asset %s/%s not found", lib, name), "Object",  slices.Collect(maps.Keys(Assets)) )
+		return nil
+	}
 	return Assets[lib](name)
 }
 

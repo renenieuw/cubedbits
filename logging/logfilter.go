@@ -5,22 +5,27 @@ import (
 	"strings"
 )
 
+type Context struct {
+	Name string
+	Enabled bool
+}
+
 type LogFilter struct {
-	Contexts map[string]bool
+	Contexts []Context
 }
 
 func (l LogFilter) HandleAttributes(attrs []slog.Attr) bool {
 	for _, attr := range attrs {
 		if(attr.Key == "Context"){
-			for filter, val := range l.Contexts {
-				if(strings.HasSuffix(filter,"*")) {
-					filter = strings.Replace(filter, "*", "", -1)
+			for _, val := range l.Contexts {
+				if(strings.HasSuffix(val.Name,"*")) {
+					filter := strings.Replace(val.Name, "*", "", -1)
 					if strings.HasPrefix(attr.Value.String(), filter) {
-						return val
+						return val.Enabled
 					}
 				} else {
-					if(filter == attr.Value.String()) {
-						return val
+					if(val.Name == attr.Value.String()) {
+						return val.Enabled
 					}
 				}
 

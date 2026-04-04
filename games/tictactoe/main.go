@@ -69,8 +69,8 @@ func main() {
 		Level: slog.LevelDebug,
 		AddSource: true,
 	}
-	contexts := make(map[string]bool)
-	contexts["Main"] = true
+	var contexts []logging.Context
+	contexts = append(contexts, logging.Context{ Name: "Main", Enabled: true })
 	logFilter := logging.LogFilter{ Contexts: contexts }
 	mainlogger := slog.New(logging.NewFilteredJSONHandler(logFile,handlerOpts, &logFilter))
 
