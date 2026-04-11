@@ -45,6 +45,7 @@ func (st *GameplayState) OnResume(world *ecs.World) {
 func (st *GameplayState) OnStart(world *ecs.World) {
 	logger := slog.Default().With("Context","InitGameplay")
 	logger.Debug("Gameplay.Start")
+	logger.Debug("Gameplay.Start2")
 
 	st.TileSystem = ts.TileSystem{}
 
@@ -53,7 +54,7 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 
 	spriteSheetBigBackground, ok := (*spriteSheets)["tictactoe"]
 	if !ok {
-		logger.Error("SpriteSheet 'game' not found")
+		logger.Error("SpriteSheet 'tictactoe' not found")
 		return
 	}
 

@@ -59,11 +59,12 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 }
 
 func main() {
-	logFile, err := os.OpenFile("c:/temp/logs/tictactoe.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	logFile, err := os.OpenFile("c:/data/logging/tictactoe/default.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		panic(err)
 	}
-	defer logFile.Close()
+
+
 
 	handlerOpts := &slog.HandlerOptions{
 		Level: slog.LevelDebug,
@@ -96,11 +97,11 @@ func main() {
 	dataGame := assets.TictactoeJson[:]
 
 	sse := loader.LoadSpriteSheetsFromString(dataGameEngine)
-	ss := loader.LoadSpriteSheetsFromJson(dataGame, "tictactoe", "tictactoe.png")
+	ss, _ := loader.LoadSpriteSheetsFromJson(dataGame, "tictactoe", "tictactoe", "tictactoe.png")
 
 	maps.Copy(sse, ss)
 
-	logger.Debug("Loaded spritesheets", "Object", sse)
+	logger.Debug("Loaded spritesheetssss", "Object", sse, "Dump", sse)
 
 
 	r.ScreenDimensions = &resources.ScreenDimensions{Width: 640, Height: 480, Title: "TicTacToe"}
@@ -112,7 +113,9 @@ func main() {
 
 	ebiten.SetWindowSize(640, 480)
 	ebiten.SetWindowTitle("Starss")
+	if(false){
 	if err := ebiten.RunGame(&Game{w, st.Init(&ts.GameplayState{}, w)}); err != nil {
 		slog.Error("error", "err", err)
+	}
 	}
 }

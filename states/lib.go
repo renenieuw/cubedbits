@@ -59,8 +59,16 @@ type StateMachine struct {
 	frame int
 }
 
+func Bla() int{
+	logger := slog.Default().With("Context","InitGameplay")
+	logger.Debug("StateMachine init bla")
+	return 12;
+}
+
 // Init creates a new state machine with an initial state
 func Init(s State, world *w.World) StateMachine {
+	logger := slog.Default().With("Context","InitGameplay")
+	logger.Debug("StateMachine init", "Object", s)
 	s.OnStart(world)
 	return StateMachine{[]State{s}, Transition{TransNone, []State{}}, 0}
 }
