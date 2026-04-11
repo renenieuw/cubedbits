@@ -73,7 +73,7 @@ func main() {
 	var contexts []logging.Context
 	contexts = append(contexts, logging.Context{ Name: "Main", Enabled: true })
 	logFilter := logging.LogFilter{ Contexts: contexts }
-	mainlogger := slog.New(logging.NewFilteredJSONHandler(logFile,handlerOpts, &logFilter))
+	mainlogger := slog.New(logging.NewFilteredJSONHandler(logFile, "C:/Data/Logging/tictactoe/dumper.json",   handlerOpts, &logFilter))
 
 
 	slog.SetDefault(mainlogger)
@@ -97,7 +97,7 @@ func main() {
 	dataGame := assets.TictactoeJson[:]
 
 	sse := loader.LoadSpriteSheetsFromString(dataGameEngine)
-	ss, _ := loader.LoadSpriteSheetsFromJson(dataGame, "tictactoe", "tictactoe", "tictactoe.png")
+	ss, _ := loader.LoadSpriteSheetsFromJson(dataGame, "tictactoe", "tictactoe.png")
 
 	maps.Copy(sse, ss)
 

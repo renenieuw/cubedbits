@@ -13,19 +13,20 @@ type FilteredJSONHandler struct {
 	jSONHandler slog.Handler
 	jSONDumpHandler slog.Handler
 	dumpBytes *bytes.Buffer
+	dumpPath string
 	logFilter *LogFilter
 	ignoreLogs bool
 }
 
-func NewFilteredJSONHandler(w io.Writer, opts *slog.HandlerOptions, logFilter *LogFilter) *FilteredJSONHandler {
-	s := "Hello"
+func NewFilteredJSONHandler(w io.Writer, dumpPath string, opts *slog.HandlerOptions, logFilter *LogFilter) *FilteredJSONHandler {
+	s := ""
 	buf := bytes.NewBufferString(s)
-	fmt.Fprint(buf, ", World!")
 	return &FilteredJSONHandler{
 		jSONHandler: slog.NewJSONHandler(w,opts),
 		jSONDumpHandler: slog.NewJSONHandler(buf,opts),
 		logFilter: logFilter,
 		dumpBytes: buf,
+		dumpPath: dumpPath,
 	}
 }
 
@@ -39,7 +40,7 @@ func (h *FilteredJSONHandler) Handle(context context.Context, r slog.Record) err
 			h.dumpBytes.Reset()
 
 			h.jSONDumpHandler.Handle(context,r)
-			os.WriteFile("C:/Data/Logging/tictactoe/dump.json", h.dumpBytes.Bytes(), 0644)
+			os.WriteFile(h.dumpPath, h.dumpBytes.Bytes(), 0644)
 			fmt.Println(h.dumpBytes)
 		}
 		return true
@@ -55,12 +56,12 @@ func (h *FilteredJSONHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
 	if(h.logFilter.HandleAttributes(attrs)) {
 		var jsonHandler = h.jSONHandler.WithAttrs(attrs)
 		var jsonDumpHandler = h.jSONDumpHandler.WithAttrs(attrs)
-		return &FilteredJSONHandler{jSONHandler: jsonHandler, jSONDumpHandler: jsonDumpHandler, dumpBytes: h.dumpBytes, logFilter: h.logFilter, ignoreLogs: false }
+		return &FilteredJSONHandler{jSONHandler: jsonHandler, jSONDumpHandler: jsonDumpHandler, dumpPath: h.dumpPath, dumpBytes: h.dumpBytes, logFilter: h.logFilter, ignoreLogs: false }
 
 	} else {
 		var jsonHandler = h.jSONHandler.WithAttrs(attrs)
 		var jsonDumpHandler = h.jSONDumpHandler.WithAttrs(attrs)
-		return &FilteredJSONHandler{jSONHandler: jsonHandler, jSONDumpHandler: jsonDumpHandler, dumpBytes: h.dumpBytes, logFilter: h.logFilter, ignoreLogs: true }
+		return &FilteredJSONHandler{jSONHandler: jsonHandler, jSONDumpHandler: jsonDumpHandler, dumpPath: h.dumpPath, dumpBytes: h.dumpBytes, logFilter: h.logFilter, ignoreLogs: true }
 	}
 }
 
