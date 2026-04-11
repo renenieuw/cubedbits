@@ -15,13 +15,13 @@ import (
 )
 
 
-func LoadSpriteSheetsFromJson(data []byte, lib string, imgName string) (map[string]c.SpriteSheet, error) {
+func LoadSpriteSheetsFromJson(data []byte, lib string, name string, imgName string) (map[string]c.SpriteSheet, error) {
 	logger := slog.Default().With("Context","Loader.LoadSpritesheets")
 	logger.Debug("LoadSpriteSheetsFromJson: ", "lib", lib, "imgName", imgName)
 
 	sheet, err := texturepacker.SheetFromData(data, texturepacker.FormatJSONHash{})
 	if err != nil {
-		slog.Error("LoadSpriteSheetsFromJson error","error", err, "Object", )
+		slog.Error("LoadSpriteSheetsFromJson error","error", err)
 		return nil, err
 	}
 
@@ -43,7 +43,7 @@ func LoadSpriteSheetsFromJson(data []byte, lib string, imgName string) (map[stri
 			group = filename
 		}
 		spr = c.Sprite{X: sprite.Frame.Min.X, Y: sprite.Frame.Min.Y, Width: sprite.Frame.Dx(), Height: sprite.Frame.Dy(), Name: filename, SpriteGroup: group}
-		logger.Info("sprite", "s", spr)
+		logger.Info("sprite", "Object", spr)
 		sprites[group] = append(sprites[group], spr)
 
 		sort.Slice(sprites[group], func(i, j int) bool {
@@ -62,8 +62,8 @@ func LoadSpriteSheetsFromJson(data []byte, lib string, imgName string) (map[stri
 	var tex c.Texture
 	tex.Image =  textureImage
 
-	retVal[lib] = c.SpriteSheet{ Texture: tex, Sprites: sprites}
+	retVal[name] = c.SpriteSheet{ Texture: tex, Sprites: sprites}
 
-	logger.Debug("Loaded sprite sheet: ", "lib", lib, "imgName", imgName, "data", retVal)
+	logger.Debug("Loaded sprite sheet: ", "lib", lib, "imgName", imgName, "name", name, "data", retVal)
 	return retVal, nil
 }
