@@ -49,8 +49,10 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 
 	st.TileSystem = ts.TileSystem{}
 
-	resources := ecs.GetResource[resources.Resources](world)
-	spriteSheets := resources.SpriteSheets
+	var tex = resources.Default()
+
+	res := ecs.GetResource[resources.Resources](world)
+	spriteSheets := res.SpriteSheets
 
 	spriteSheetBigBackground, ok := (*spriteSheets)["tictactoe"]
 	if !ok {
@@ -58,25 +60,19 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 		return
 	}
 
-	backgroundIndex := 0
+//	backgroundIndex := 0
 	for groupname, sprites := range spriteSheetBigBackground.Sprites {
 		logger.Debug(fmt.Sprintf("Spritegroup %s has length %d", groupname, len(sprites)))
 
 		for i, sprite := range sprites {
 			logger.Debug(fmt.Sprintf("Sprite %d has has name %s", i, sprite.Name))
 		}
-
 	}
 
 	mapper2 := ecs.NewMap2[gc.SpriteRender, gc.Transform](world)
 
 	mapper2.NewEntity(
-		&gc.SpriteRender{
-			SpriteSheet:  &spriteSheetBigBackground,
-			SpriteNumber: backgroundIndex,
-			SpriteGroup: "Background.png",
-			Options:      ebiten.DrawImageOptions{},
-		},
+		tex.GetSpriteRender("Background.png/Background.png"),
 		&gc.Transform{Translation: math.Vector2{X: 0, Y: 0}, Origin: "Middle"},
 	)
 
@@ -101,14 +97,8 @@ func (st *GameplayState) OnStart(world *ecs.World) {
 
 func InitTiles(world *ecs.World) {
 
-	resources := ecs.GetResource[resources.Resources](world)
-	spriteSheets := resources.SpriteSheets
+	var tex = resources.Default()
 
-	spriteSheetTiles, ok := (*spriteSheets)["tictactoe"]
-
-	if !ok {
-		log.Error("SpriteSheet 'tictactoe' not found")
-	}
 
 	for i := 0; i < 3; i++ {
 		for j := 0; j < 3; j++ {
@@ -116,7 +106,7 @@ func InitTiles(world *ecs.World) {
 			mapper := ecs.NewMap4[gc.SpriteRender, gc.Transform, gc.MouseReactive, tc.Tile](world)
 
 			mapper.NewEntity(
-				&gc.SpriteRender{SpriteSheet: &spriteSheetTiles, SpriteNumber: 0, SpriteGroup: "Tiles", Options: ebiten.DrawImageOptions{}},
+				tex.GetSpriteRender("Tiles/E.png"),
 				&gc.Transform{Translation: math.Vector2{X: float64(j*140) + 180, Y: float64(i*140) + 100}},
 				&gc.MouseReactive{ID: fmt.Sprint("test", "", j, " - ", i)},
 				&tc.Tile{X: j, Y: i, State: 0},
@@ -158,8 +148,8 @@ func (st *GameplayState) Update(world *ecs.World) states.Transition {
 
 	if inpututil.IsKeyJustPressed(ebiten.Key1) {
 
-		resources := ecs.GetResource[resources.Resources](world)
-		spriteSheets := resources.SpriteSheets
+		res := ecs.GetResource[resources.Resources](world)
+		spriteSheets := res.SpriteSheets
 
 		spriteSheetTiles, ok := (*spriteSheets)["Tiles"]
 		if !ok {

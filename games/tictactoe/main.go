@@ -1,9 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"image/color"
 	"log/slog"
-	"maps"
 	"os"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -59,7 +59,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 }
 
 func main() {
-	logFile, err := os.OpenFile("c:/data/logging/tictactoe/default.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	logFile, err := os.OpenFile("c:/data/logging/tictactoe/default.json", os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		panic(err)
 	}
@@ -71,9 +71,9 @@ func main() {
 		AddSource: true,
 	}
 	var contexts []logging.Context
-	contexts = append(contexts, logging.Context{ Name: "Main", Enabled: true })
+	contexts = append(contexts, logging.Context{ Name: "*", Enabled: true })
 	logFilter := logging.LogFilter{ Contexts: contexts }
-	mainlogger := slog.New(logging.NewFilteredJSONHandler(logFile, "C:/Data/Logging/tictactoe/dumper.json",   handlerOpts, &logFilter))
+	mainlogger := slog.New(logging.NewFilteredJSONHandler(logFile, "C:/Data/Logging/tictactoe/dump.json",   handlerOpts, &logFilter))
 
 
 	slog.SetDefault(mainlogger)
@@ -97,15 +97,30 @@ func main() {
 	dataGame := assets.TictactoeJson[:]
 
 	sse := loader.LoadSpriteSheetsFromString(dataGameEngine)
-	ss, _ := loader.LoadSpriteSheetsFromJson(dataGame, "tictactoe", "tictactoe.png")
+	ss, _ := loader.LoadSpriteSheetsFromJson(dataGame, "tictactoe", "tictactoe", "tictactoe.png")
 
-	maps.Copy(sse, ss)
+	v := resources.Textures { }
+	v.AddSpritesheet(sse)
+	v.AddSpritesheet(ss)
+	resources.SetDefault(&v)
 
-	logger.Debug("Loaded spritesheetssss", "Object", sse, "Dump", sse)
+	vv := resources.Default()
+
+
+
+	// maps.Copy(sse, ss)
+
+	logger.Debug("Loaded spritesheetssss", "Object", sse)
+	logger.Debug("Dump", "Dump", vv.Spritesheets)
 
 
 	r.ScreenDimensions = &resources.ScreenDimensions{Width: 640, Height: 480, Title: "TicTacToe"}
 	r.SpriteSheets = &sse
+
+	spr := vv.GetSpriteRender("Tiles/O.png")
+	logger.Debug("GetTexture found it" + spr.SpriteGroup)
+	logger.Debug(fmt.Sprintf( "GetTexture found it %d", spr.SpriteNumber))
+
 
 	// Load fonts
 	fonts := loader.LoadFonts("cubedBits/fonts.toml")
@@ -113,9 +128,7 @@ func main() {
 
 	ebiten.SetWindowSize(640, 480)
 	ebiten.SetWindowTitle("Starss")
-	if(false){
 	if err := ebiten.RunGame(&Game{w, st.Init(&ts.GameplayState{}, w)}); err != nil {
 		slog.Error("error", "err", err)
-	}
 	}
 }
