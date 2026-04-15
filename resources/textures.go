@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log/slog"
 	"maps"
-	"path/filepath"
 	"strings"
 	"sync/atomic"
 
@@ -26,18 +25,22 @@ func Default() *Textures {
 	return defaultTextures.Load()
 }
 
+func (t *Textures) Dump() {
+	logger := slog.Default().With("Context","GetTexture")
+	logger.Debug("DumpTextures","Dump", t.Spritesheets)
+}
 
 func (t *Textures) GetSpriteRender(path string) *components.SpriteRender  {
 
-	s1,s2 := SplitPath(path)
+	s1 := SplitPath(path)
 
 	rootPath := s1[0]
-	spriteName := strings.Join(s1[1:], "/") + s2
+	spriteName := strings.Join(s1[1:], "/")
 
 
 	logger := slog.Default().With("Context","GetTexture")
 	logger.Debug(fmt.Sprintf("path %s", s1[0]))
-	logger.Debug(fmt.Sprintf("filename %s", s2))
+	logger.Debug(fmt.Sprintf("filenamer %s", spriteName))
 
 	for key, s := range t.Spritesheets {
 
@@ -71,29 +74,12 @@ func (t *Textures) AddSpritesheet(spriteSheet map[string]components.SpriteSheet)
 }
 
 
-func SplitPath(path string) ([]string, string) {
-	// Standardize path separators to forward slashes for consistent splitting
-	standardizedPath := filepath.ToSlash(path)
 
-	dir, file := filepath.Split(standardizedPath)
-
-	// Trim the trailing slash from dir if it exists
-	dir = strings.TrimSuffix(dir, "/")
-
-	if dir == "" {
-		return []string{}, file
-	}
+func SplitPath(path string) ([]string) {
 
 	// Split the directory part into individual directory names
-	parts := strings.Split(dir, "/")
+	parts := strings.Split(path, "/")
 
-	// Filter out any empty strings that might result from multiple slashes or leading slashes
-	var directories []string
-	for _, part := range parts {
-		if part != "" {
-			directories = append(directories, part)
-		}
-	}
 
-	return directories, file
+	return parts
 }
