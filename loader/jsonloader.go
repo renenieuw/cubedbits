@@ -36,7 +36,7 @@ func LoadSpriteSheetsFromJson(data []byte, lib string, name string, imgName stri
 	var sprites = make(map[string][]c.Sprite)
 
 	for name, sprite := range sheet.Sprites {
-		group, filename, found := strings.Cut(name, "/")
+		group, filename, found := strings.Cut(strings.ToLower(name), "/")
 		var spr c.Sprite
 		if(!found) {
 			filename = name;

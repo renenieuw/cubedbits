@@ -43,13 +43,12 @@ func (t *Textures) GetSpriteRender(path string) *components.SpriteRender  {
 	logger.Debug(fmt.Sprintf("filenamer %s", spriteName))
 
 	for key, s := range t.Spritesheets {
-
 		logger.Debug(fmt.Sprintf("Searching %s for %s %s", key, rootPath, spriteName), "spritesheet", s)
 		found := s.Sprites[s1[0]] != nil
 		logger.Debug(fmt.Sprintf("Found %t", found))
 		if(found){
 			for index, sp := range s.Sprites[s1[0]] {
-				if(sp.Name == spriteName) {
+				if(strings.ToLower(sp.Name) == strings.ToLower(spriteName)) {
 					logger.Debug(fmt.Sprintf("Found complete %s", sp.Name))
 					sr := components.SpriteRender {
 						SpriteSheet: &s,
@@ -79,7 +78,9 @@ func SplitPath(path string) ([]string) {
 
 	// Split the directory part into individual directory names
 	parts := strings.Split(path, "/")
-
+	for i,s := range parts {
+		parts[i] = strings.ToLower(s)
+	}
 
 	return parts
 }
